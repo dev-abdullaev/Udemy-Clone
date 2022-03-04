@@ -4,7 +4,7 @@
 {% block content %}
     <div class="container">
         <div class="row">
-            <h1 style='color: #00b533; font-size: 50px' class="text-center mt-5">All Courses</h1>
+            <h1 style='color: #00b533; font-size: 50px' class="text-center mt-3">All Courses</h1>
             {% for course in courses %}
                 <div class="col-lg-3 mb-3 mt-3">
                     <div class="card">
@@ -13,7 +13,7 @@
                         <h5 class="card-title">{{course.name|truncatechars:20}}</h5>
                         <b class="card-text">${{course.price}}</b>
                         <hr>
-                        {% if request.user.is_authenticated and not request.user.is_superuser %}
+                        {% if request.user.is_authenticated and not request.user.is_superuser and not request.user.is_staff %}
                             <div class="d-grid">
                                 <a href="{% url 'course_detail' course.slug %}" class='btn btn-primary'>View</a>
                             </div>
