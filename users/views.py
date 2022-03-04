@@ -21,8 +21,8 @@ def student_and_admin_dashboard(request):
     completed_course_count = Course.objects.filter(is_completed=True).count() 
     total_students = Enroll.objects.annotate(Count('student')).count()
 
-    teacher_course_count = Course.objects.filter(teacher__id=request.user.id).count()
-    teacher_courses = Course.objects.filter(teacher__id=request.user.id)
+    teacher_course_count = Course.objects.filter(teacher__id=request.user.is_staff).count()
+    teacher_courses = Course.objects.filter(teacher__id=request.user.is_staff)
     enrolls = Enroll.objects.all()
 
 
