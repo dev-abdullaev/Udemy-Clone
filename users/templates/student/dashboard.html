@@ -4,7 +4,7 @@
 {% block content %}
     <div class="container">
         <div class="row">
-            {% if request.user.is_authenticated and not request.user.is_superuser  %}
+            {% if request.user.is_authenticated and not request.user.is_superuser and not request.user.is_staff  %}
                 <div class="row mb-2">
                     <div class="col-2">
                         <img style='border-radius: 50%;width: 150px; height: 150px; ' src="{{request.user.profile_picture.url}}" alt="">
@@ -84,7 +84,8 @@
                         </div>
                     </div>
                 </div>
-            {% else %}
+            {% endif %}
+            {% if request.user.is_staff %}
                 <div class="row mb-2">
                     <div class="col-2">
                         <img style='border-radius: 50%;width: 150px; height: 150px; ' src="{{request.user.profile_picture.url}}" alt="">
@@ -97,8 +98,8 @@
                 <hr>
             
                 <div class="row" >
-                    <div class="col-3" style="border-right: 1px solid ; margin-top: -17px" >
-                        <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-white" >
+                    <div class="col-2" style="border-right: 1px solid ; margin-top: -17px" >
+                        <div class="d-flex flex-column flex-shrink-0 p-2 text-white bg-white" >
 
                             <ul class="nav nav-pills flex-column mb-auto">
                                 <li>
@@ -121,33 +122,40 @@
                         </div>
                     </div>
 
-                    <div class="col-9">
+                    <div class="col-10">
                         <div class="row mx-4">
                             <div class="col">
-                                <h1 >Dashboard</h1>
+                                <h1 class='text-center' >Dashboard</h1>
                             </div>
                             <div class="row">
                                 <div class="col my-2">
                                     {% if teacher_course_count > 0 %}
-                                        <h4>All My Added Courses {{teacher_course_count}}</h4>
-                                        {% for course in teacher_courses %}
-                                            <a class='text-decoration-none' 
-                                                href="{% url 'course_detail' course.slug %}">{{course.name}}
-                                                
-                                                {{course.enroll_set.count}}
-                                                 
-                                            </a><br>
-                                        {% endfor %}
+                                        <table class='table table-bordered'>
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">Course Name</th>
+                                                    <th scope="col">Students in Each Course</th>
+                                                </tr>
+                                            </thead>
+                                            {% for course in teacher_courses %}
+                                                <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            <a class='text-decoration-none' 
+                                                                href="{% url 'course_detail' course.slug %}">{{course.name}}
+                                                            </a>
+                                                        </td>
+                                                        <td>
+                                                            {{course.enroll_set.count}}
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            {% endfor %}
+                                            <b>Total Number of Students: {{total_students}}</b>
+                                        </table>
                                     {% else %}
-                                    {% comment %} {% for enroll in enroll %}
-                                            
-                                    {% endfor %} {% endcomment %}
                                         <h6>You did not add any course!</h6>
-                                    
                                     {% endif %}
-                                </div>
-                                <div class="col my-2">
-                                    <h4>Teacher's students {{total_students}}</h4> 
                                 </div>
                             </div>
                         </div>

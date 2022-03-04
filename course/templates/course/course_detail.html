@@ -92,7 +92,7 @@
                         </div>
                         <div class="col-3">
                             <span class="text-muted">Number of Students: <br>
-                            <span class=text-dark>{{count_for_every_course}}</span></b>
+                            <span class=text-dark>{{student_for_every_course}}</span></b>
                         </div>
                         <div class="col-3 mb-2">
                             <span class="text-muted">Last Update: </span><br> {{course.updated|date}}
@@ -133,7 +133,7 @@
                                         <div id="collapseOne{{ section.id }}" class="accordion-collapse collapse show" aria-labelledby="headingOne{{ section.id }}" data-bs-parent="#accordionExample">
                                             <div class="accordion-body">
                                                 {% for video in section.video.all %}
-                                                    {% if is_paid or request.user.is_superuser %}
+                                                    {% if is_paid or request.user.is_staff %}
                                                         <a class='text-decoration-none' href="{% url 'watch_course' course.slug  %}">
                                                             <i style='font-size: 20px' class="bi bi-play-circle"></i> 
                                                             {{video.name}} 
@@ -178,7 +178,7 @@
                                     {{course.get_rating|floatformat:1}}
                                     ({{course.get_number_of_rating}} ratings)
                                 </div>
-                                {% if request.user.is_superuser %}
+                                {% if request.user.is_staff %}
                                     <div class="col-3">
                                         <i style='font-size: 30px' class="bi bi-mortarboard"></i>
 
