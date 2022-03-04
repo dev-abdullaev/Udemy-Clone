@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    <div class="row">
+        <div class="col-5">
+            <h5 class="text-center"><i style='font-size: 25px' class="bi bi-book"></i> The number of lessons</h5>
+            {% for section in course.section.all %}
+                <div class="accordion" id="accordionExample">
+                
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingOne{{section.id}}">
+                            
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne{{ section.id }}" aria-expanded="true" aria-controls="collapseOne{{ section.id }}">
+                            {{section.name}} 
+                        </button>
+                        </h2>
+                        
+                        <div id="collapseOne{{ section.id }}" class="accordion-collapse collapse show" aria-labelledby="headingOne{{ section.id }}" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                {% for video in section.video.all %}
+                                    {% if is_paid or request.user.is_superuser %}
+                                        <a class='text-decoration-none' href="{% url 'watch_course' course.slug  %}">
+                                            <i style='font-size: 20px' class="bi bi-play-circle"></i> 
+                                            {{video.name|truncatechars:20}}
+                                            <span style='margin-left:250px'>{{video.get_video_length_time}}</span>
+                                            <i class="bi bi-unlock"></i>
+                                        </a><br><br>
+                                    {% else %}
+                                        <a class='text-decoration-none btn disabled' href="{% url 'watch_course' course.slug  %}">
+                                            <i style='font-size: 20px' class="bi bi-play-circle"></i> 
+                                            {{video.name}}
+                                            <span style='margin-left:230px'>{{video.get_video_length_time}}</span>
+                                            <i class="bi bi-lock"></i>
+                                        </a><br><br>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}     
+        </div>
+        <div class="col-7 my-3 p-4">
+            <iframe 
+                {% for section in course.section.all %}
+                    {% for video in section.video.all %}
+                        src="{{video.link}}"
+                    {% endfor %}
+                {% endfor %}
+                allowfullscreen="" width="750" height="400" frameborder="0">
+            </iframe>  
+        </div>
+    </div>
+
+<script>
+ 
+</script>
+
+
+{% endblock content %}
+
+
+

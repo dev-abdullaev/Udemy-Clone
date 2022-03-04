@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <h1 style='color: #00b533; font-size: 50px' class="text-center mt-5">All Courses</h1>
+            {% for course in courses %}
+                <div class="col-lg-3 mb-3 mt-3">
+                    <div class="card">
+                        <img style='width: 259px; height: 270px;' src="{{ course.image.url }}" class="card-img-top" alt="...">
+                        <div class="card-body">
+                        <h5 class="card-title">{{course.name|truncatechars:20}}</h5>
+                        <b class="card-text">${{course.price}}</b>
+                        <hr>
+                        {% if request.user.is_authenticated and not request.user.is_superuser %}
+                            <div class="d-grid">
+                                <a href="{% url 'course_detail' course.slug %}" class='btn btn-primary'>View</a>
+                            </div>
+                        {% else %}
+                            <div class="row">
+                                <div class="col-4">
+                                    <a href="{% url 'course_detail' course.slug %}" class='btn btn-primary'>View</a>
+                                </div>
+                                <div class="col-4">
+                                    <a href="{% url 'update_course' course.pk %}" class='btn btn-info'>Edit</a>
+                                </div>
+                                <div class="col-4"> 
+                                    <a href="{% url 'delete_course' course.pk %}" class='btn btn-danger'>Delete</a>
+                                </div>                       
+                            </div>
+                        {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            
+        </div>
+    </div>
+    
+{% endblock content %}

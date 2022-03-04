@@ -1,0 +1,161 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            {% if request.user.is_authenticated and not request.user.is_superuser  %}
+                <div class="row mb-2">
+                    <div class="col-2">
+                        <img style='border-radius: 50%;width: 150px; height: 150px; ' src="{{request.user.profile_picture.url}}" alt="">
+                    </div>
+                    <div class="col-8" style='margin-left:-20px'>
+                        <h1 class='my-5'>{{request.user.first_name}} {{request.user.last_name}}</h1>
+                    </div>
+                    
+                </div>
+                <hr>
+            
+                <div class="row" >
+                    <div class="col-3" style="border-right: 1px solid ; margin-top: -17px" >
+                        <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-white" style="width: 280px; border-right: 1px solid black">
+
+                            <ul class="nav nav-pills flex-column mb-auto">
+                                <li>
+                                    <a class="nav-link" href="{% url 'student_admin_dashboard' %}">
+                                        <i style='font-size: 20px' class="bi bi-speedometer2"></i>&nbsp;&nbsp; Dashboard
+                                    </a>
+                                  </li>
+                                <li class="nav-item">
+                                    <a href="{% url 'profile' %}" class="nav-link" >
+                                        <i style='font-size: 20px' class="bi bi-person"></i>&nbsp;&nbsp; My Profile
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="nav-link">
+                                        <i style='font-size: 20px' class="bi bi-bag-check"></i>&nbsp;&nbsp; Purchase History
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'logout' %}" class="nav-link">
+                                        <i style='font-size: 20px' class="bi bi-box-arrow-in-right"></i>&nbsp;&nbsp; Logout
+                                    </a>
+                                </li>
+                            </ul>
+                            <hr>
+                        </div>
+                    </div>
+
+                    <div class="col-9">
+                        <div class="row mx-4">
+                            <div class="col">
+                                <h1 >Dashboard</h1>
+                            </div>
+                            <div class="row">
+                                <div class="col my-2">
+                                    {% if std_course_count > 0 %}
+                                        <h4><a class='text-decoration-none'>All My Courses {{std_course_count}}</a></h4>
+                                        {% for course in enrolled_courses %}
+                                            <a class='text-decoration-none' 
+                                                href="{% url 'watch_course' course.slug %}" class=''>{{course.name}} <br>
+                                            </a>
+                                        {% endfor %}
+                                    {% else %}
+                                        <h6>You did not purchase any course!</h6>
+                                    
+                                    {% endif %}
+                                </div>
+
+                                <div class="col my-2">
+                                    {% if completed_course_count > 0 %}
+                                        <h4>Completed Courses {{completed_course_count}}</h4>
+                                        {% for course in courses %}
+                                            <a class='text-decoration-none' href="{% url 'watch_course' course.slug %}" class=''>{{course.completed_course_count}} <br></a>
+                                        {% endfor %}
+                                    {% else %}
+                                        <h6>You did not complete any course!</h6>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="row mb-2">
+                    <div class="col-2">
+                        <img style='border-radius: 50%;width: 150px; height: 150px; ' src="{{request.user.profile_picture.url}}" alt="">
+                    </div>
+                    <div class="col-8" style='margin-left:-20px'>
+                        <h1 class='my-5'>{{request.user.first_name}} {{request.user.last_name}}</h1>
+                    </div>
+                    
+                </div>
+                <hr>
+            
+                <div class="row" >
+                    <div class="col-3" style="border-right: 1px solid ; margin-top: -17px" >
+                        <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-white" >
+
+                            <ul class="nav nav-pills flex-column mb-auto">
+                                <li>
+                                    <a class="nav-link" href="{% url 'student_admin_dashboard' %}">
+                                        <i style='font-size: 20px' class="bi bi-speedometer2"></i>&nbsp;&nbsp; Dashboard
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{% url 'profile' %}" class="nav-link" >
+                                        <i style='font-size: 20px' class="bi bi-person"></i>&nbsp;&nbsp; My Profile
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'logout' %}" class="nav-link">
+                                        <i style='font-size: 20px' class="bi bi-box-arrow-in-right"></i>&nbsp;&nbsp; Logout
+                                    </a>
+                                </li>
+                            </ul>
+                            <hr>
+                        </div>
+                    </div>
+
+                    <div class="col-9">
+                        <div class="row mx-4">
+                            <div class="col">
+                                <h1 >Dashboard</h1>
+                            </div>
+                            <div class="row">
+                                <div class="col my-2">
+                                    {% if teacher_course_count > 0 %}
+                                        <h4>All My Added Courses {{teacher_course_count}}</h4>
+                                        {% for course in teacher_courses %}
+                                            <a class='text-decoration-none' 
+                                                href="{% url 'course_detail' course.slug %}">{{course.name}}
+                                                
+                                                {{course.enroll_set.count}}
+                                                 
+                                            </a><br>
+                                        {% endfor %}
+                                    {% else %}
+                                    {% comment %} {% for enroll in enroll %}
+                                            
+                                    {% endfor %} {% endcomment %}
+                                        <h6>You did not add any course!</h6>
+                                    
+                                    {% endif %}
+                                </div>
+                                <div class="col my-2">
+                                    <h4>Teacher's students {{total_students}}</h4> 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}    
+        </div>
+    </div>
+    
+
+{% endblock content %}

@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+
+
+{% block content %}
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-8">
+                <h1 class='text-center'>All Sections</h1><br>
+                
+                    <table class='table table-bordered'>
+                        <thead>
+                            <tr>
+                                <th scope="col">Section Name</th>
+                                <th scope="col">Update</th>
+                                <th scope="col">Delete</th>
+                            </tr>
+                            
+                        </thead>
+                        {% for section in sections %}
+                            <tbody>
+                                <tr>
+                                    <td>{{section.name}}</td>
+                                    <td>
+                                        <a class='text-decoration-none mx-2 btn-sm btn btn-warning' 
+                                            href="{% url 'update_section' section.pk %}">
+                                            <i class="bi bi-pencil-square"></i>Edit
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a class='text-decoration-none btn btn-sm btn-danger' 
+                                            href="{% url 'delete_section' section.pk %}">
+                                            <i class="bi bi-trash"></i>Delete
+                                        </a>
+                                    </td>
+                                </tr>
+                                
+                            </tbody>
+                        {% endfor %}
+                    </table>
+               
+            </div>
+            <nav aria-label="Page navigation example">
+                {% if is_paginated %}
+                    <ul class="pagination">
+                        {% if page_obj.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{page_obj.previous_page_number}}">&laquo;</a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#">&laquo;</a>
+                            </li>
+                        {% endif %} 
+
+                        {% for i in paginator.page_range %} 
+                            {% if page_obj.number == i %}
+                                <li class="page-item"><a class="page-link active">{{ i }}</a></li>
+                            {% else %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+                                </li>
+                            {% endif %} 
+
+                        {% endfor %} 
+                        {% if page_obj.has_next %}
+                            <li class="page-item">
+                                <a href="?page={{page_obj.next_page_number}}" class="page-link">&raquo;</a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <a class="page-link">&raquo;</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                {% endif %}
+            </nav>
+        </div>
+    </div>
+
+{% endblock content %}

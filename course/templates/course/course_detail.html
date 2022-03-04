@@ -1,0 +1,249 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-4">
+                <div class="card mb-4" style="width: 20rem;">
+                    <div class="card-body">
+                        <iframe width="280" height="200" src="{{course.video_link}}" 
+                            title="YouTube video player" frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                        </iframe> 
+                        <hr>
+                        <h3>The course is ${{course.price}}</h3>
+                        <h5>The course includes</h5>
+                        <strong class='text-primary'> 
+                            <i style='font-size:20px ' class="bi bi-check text-primary"></i>
+                            Video, Quiz, PDF and Posts
+                        </strong>
+                       
+                        <form class="form-inline" method='post' action='{% url 'cart_add' course.slug %}'>{% csrf_token %}
+                            {% csrf_token %}
+                            <input type="hidden" value="" name="course_id">
+                            <input type="hidden" value="" name="name">
+                            <input type="hidden" value="" name="price">
+                            <input type="hidden" value="1" name="quantity">
+                            <div class="form-group mx-sm-3 mb-2">
+                                <input type="number" class="form-control visually-hidden" name='quantity' value='1' min='1'>
+                            </div>
+                            {% if is_enrolled %}
+                                <div class="d-grid my-2">
+                                    <button class="btn btn-primary disabled"> Already Enrolled</button>
+                                </div>
+                            {% else %}
+                                <div class="d-grid my-2">
+                                    <button class="btn btn-primary"><i class="bi bi-cart-check"></i> Add To Cart</button>
+                                </div>
+                            {% endif %}
+                        </form>
+                    </div>
+                </div>
+                <div class="requirement-section mb-4">
+                    <h4>Requirements</h4>
+                    <p><i style='font-size:20px ' class="bi bi-check text-primary"></i>{{course.requirements}}</p>
+                </div>
+                <div class="for-whom-section">
+                    <h4>To Whom</h4>
+                    <p><i style='font-size:20px ' class="bi bi-check text-primary"></i>{{course.to_whom}}</p>
+                </div>
+            </div>
+            <div class="col-8">
+                <h6>
+                    <span class="text-muted">Overall Rating:</span> {{course.get_rating|floatformat:1}}
+                    <span>
+                        {% if course.get_number_of_rating %}
+                            ({{course.get_number_of_rating}})
+                            
+                        {% else %}
+                            (0)
+                        {% endif %}
+                    </span>
+                </h6>
+                <h1 class='text-primary text-center m-3'>{{course.name}}</h1> <br>
+
+                <div class="course-detail">
+                    <div class="row">
+                        <div class="col-4">
+                            <span class="text-muted">Teacher: </span> <b>{{course.teacher}}</b>
+                        </div>
+                        <div class="col-4 mb-2">
+                            <span class="text-muted">Difficulty:</span> <b>{{course.difficulty}}</b>
+                        </div>
+                        <div class="col-4 mb-2">
+                            <span class="text-muted">Share:</span>
+                            <a href=""><i style='font-size:20px' class="bi bi-facebook mr-1"></i></a> 
+                            <a href=""><i style='font-size:20px' class="bi bi-twitter mr-1"></i></a>
+                            <a href=""><i style='font-size:20px' class="bi bi-linkedin mr-1"></i></a>
+                            <a href=""><i style='font-size:20px' class="bi bi-telegram mr-1"></i></a>
+                        </div>
+                        <hr style='width: 900px'>
+                    </div>
+                        
+                    <div class="row mt-4">
+                        <div class="col-3">
+                            <span class="text-muted">Category:</span><br> {{course.category.title}}
+                        </div>
+                        <div class="col-3">
+                            <span class="text-muted">Duration:</span><br> {{course.total_course_length}}
+                        </div>
+                        <div class="col-3">
+                            <span class="text-muted">Number of Students: <br>
+                            <span class=text-dark>{{count_for_every_course}}</span></b>
+                        </div>
+                        <div class="col-3 mb-2">
+                            <span class="text-muted">Last Update: </span><br> {{course.updated|date}}
+                        </div>
+                        <hr style='width: 900px'>
+                    </div>
+
+                    <div class="row">
+                        <h3>What will you learn during the course?</h3>
+                        <p><i style='font-size:30px' class="bi bi-check text-primary"></i> Basics of Python</p>
+                        </div>
+                    </div>
+
+                    <div class="row mt-5">
+                        <div class="col-5">
+                            <h3>Course content</h3>
+                        </div>
+                        <div class="col-4 mt-2">
+                            <span class="text-muted">Lectures</span> <strong>{{course.get_total_lectures}}</strong>
+                        </div>
+                        <div class="col-3 mt-2">
+                            <span class="text-muted">Duration</span> <strong>{{course.total_course_length}}</strong>
+                        </div>
+                    
+
+                        <div class="col-12">
+                            {% for section in course.section.all %}
+                                <div class="accordion" id="accordionExample">
+                                
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingOne{{section.id}}">
+                                            
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne{{ section.id }}" aria-expanded="true" aria-controls="collapseOne{{ section.id }}">
+                                            {{section.name}} 
+                                        </button>
+                                        </h2>
+                                       
+                                        <div id="collapseOne{{ section.id }}" class="accordion-collapse collapse show" aria-labelledby="headingOne{{ section.id }}" data-bs-parent="#accordionExample">
+                                            <div class="accordion-body">
+                                                {% for video in section.video.all %}
+                                                    {% if is_paid or request.user.is_superuser %}
+                                                        <a class='text-decoration-none' href="{% url 'watch_course' course.slug  %}">
+                                                            <i style='font-size: 20px' class="bi bi-play-circle"></i> 
+                                                            {{video.name}} 
+                                                            <span style='margin-left:450px'>{{video.get_video_length_time}}</span>
+                                                            <i class="bi bi-unlock"></i>
+                                                        </a>
+                                                    {% else %}
+                                                        <a class='text-decoration-none btn disabled' href="{% url 'watch_course' course.slug  %}">
+                                                            <i style='font-size: 20px' class="bi bi-play-circle"></i> 
+                                                            {{video.name}}
+                                                            <span style='margin-left:420px'>{{video.get_video_length_time}}</span>
+                                                            <i class="bi bi-lock"></i>
+                                                        </a><br><br>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}                           
+                        </div>
+
+                    </div>
+
+                    <div class="row mt-5 mx-1">
+                
+                        <h3>About The Instructor</h3>
+                        <div class="card">
+                            <div class="card-body">
+                                <a href="" class="">
+                                    <i style='font-size: 30px' class="bi bi-person-circle mt-4"></i>
+                                </a>
+                                <a class='text-decoration-none' href="">
+                                    <b>{{course.teacher.full_name}}</b>
+                                </a>
+                                <hr>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <span style='margin-left: 15px' class="text-muted ml-4"> Ratings:</span> 
+                                    {{course.get_rating|floatformat:1}}
+                                    ({{course.get_number_of_rating}} ratings)
+                                </div>
+                                {% if request.user.is_superuser %}
+                                    <div class="col-3">
+                                        <i style='font-size: 30px' class="bi bi-mortarboard"></i>
+
+                                        {% if teacher_courses <= 1 %}
+                                            {{teacher_courses}} course
+                                        {% else %}
+                                            {{teacher_courses}} courses
+                                        {% endif %}
+                                        
+                                    </div>
+                                {% endif %}
+                                <div class="col-3">
+                                    <i style='font-size: 30px' class="bi bi-person"></i>
+                                    {% if student_for_every_course <= 1 %}
+                                        {{ student_for_every_course }} student
+                                    {% else %}
+                                        {{ student_for_every_course  }} students
+                                    {% endif %}
+                                </div>
+                            </div>  
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-4 mt-4">
+                        <div class="col-12">
+                            <form method="post" action="{% url 'reviews' course.slug %}">
+                                {% csrf_token %}
+                                {{form|crispy}}
+                                <button class="btn btn-primary">Add review</button>
+                            </form>
+                
+                        </div>
+                    </div>
+                        
+                    <div class="row mt-5">
+                        {% if course.coursereview_set.exists %}
+                            <h3>Students' Reviews</h3><hr>
+
+                            {% for review in course.coursereview_set.all %}
+                                <div class="row mb-3">
+                                    <div class="col-1 me-2">
+                                        <img class="small-profile-pic" src="{{ review.user.profile_picture.url }}">
+                                    </div>
+                                    <div class="col-7">
+                                        <b>{{ review.user.username }}</b> rated it {{ review.stars_given }} stars  <span class="fw-lighter">{{ review.created_at }}</span>
+                                        {% if review.user == request.user %}
+                                            <a href="{% url 'edit_course_review' course.slug review.id %}"><i class="bi bi-pen"></i></a>
+                                            <a href="{% url 'delete_course_comment' course.slug review.id %}"><i class="bi bi-trash"></i></a>
+                                        {% endif %}
+                                        <p class="mt-2 font-monospace">{{ review.comment }}</p>
+
+                                    </div>
+                                </div>
+
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>   
+            </div>
+        </div>
+        
+    </div>
+
+
+
+    <br><br>
+
+{% endblock content %}

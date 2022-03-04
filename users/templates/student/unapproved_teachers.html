@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-8">
+                <table class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th scope="col">First Name</th>
+                        <th scope="col">Last Name</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    {% for teacher in teachers %}
+                        <tbody>
+                        <tr>
+                            <td>{{teacher.first_name}}</td>
+                            <td>{{teacher.last_name}}</td>
+                            <td>
+                                <a href="{% url 'approve_teacher' teacher.pk %}" class='btn btn-sm btn-info'>Approve</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    {% endfor %}
+                  </table>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}

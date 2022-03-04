@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+    <section class="page-header-area my-course-area">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <h1 class="page-title text-center">My Courses</h1>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="my-courses-area">
+        <div class="container">
+            <div class="row no-gutters" id="my_courses_area">
+                {% for enroll in enrolls %}
+
+                    <div class="col-lg-3">
+                        <div class="course-box-wrap">
+                            <div style='border: 1px solid black' class="course-box">
+                                <a href="{% url 'watch_course' enroll.course.slug %}" class="btn">
+                                    <img style='width:300px; height:200px' src="{{enroll.course.image.url}}" alt="" class="img-fluid">
+                                    <br><br>
+                                    <b class="">{{enroll.course.name}}</b>
+                                </a>
+                                <div class="d-grid">
+                                    <a class='m-2 btn btn-danger btn-sm ' href="{% url 'delete_my_course' enroll.course.slug enroll.pk %}">Remove</a>
+                                </div>
+                               
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

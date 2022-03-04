@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+    <div class="container">
+        <h1 class='text-center'>Delete Section</h1>
+        <form action="" method="post">{% csrf_token %}
+            <p>Are you sure you want to delete {{enroll.course.name}}?</p>
+            <a class="btn btn-warning text-center" href="{% url 'course_detail' course.slug %}">Cancel</a>
+            <button class="btn btn-danger ml-2" type="submit">Confirm</button>
+        </form>
+    </div>
+    
+{% endblock content %}
