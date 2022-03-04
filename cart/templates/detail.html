@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+    <section class="cart-list-area">
+        <div class="container">
+            {% with total_items=cart|length %}
+                {% if cart|length > 0 %}
+                    <div class="row" id="cart_items_details">
+                        <div class="col-lg-9">
+
+                            <div class="in-cart-box">
+                                <div class="title">{{ total_items }} courses in cart</div>
+                                <div class="">
+                                    <ul class="cart-course-list list-unstyled">
+                                        {% for item in cart %}
+                                            {% with course=item.course %}
+                                                <li>
+                                                    <div class="cart-course-wrapper">
+                                                        <div class="card">
+                                                            
+                                                            <div class="card-body">
+                                                              <img style='width:100px; height:70px' src="{{course.image.url}}" alt="">
+                                                              <span class="card-text px-3 fw-bold">{{course.name}}</span>
+                                                              <b>${{ course.price | floatformat:2  }}</b> 
+                                                              <form action="{% url 'cart_remove' course.slug %}" method="post"><br>
+                                                                    {% csrf_token %}
+                                                                    <input type="hidden" value="{{ course.slug }}">
+                                                                    <input type="submit" class="btn btn-sm btn-danger" value="Remove">
+                                                                </form>
+
+                                                              
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            {% endwith %}
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="cart-sidebar">
+                                <div class="total">Total:
+                                    $<b id="total_price_of_checking_out">{{ cart.get_total_price | floatformat:2 }}</b>
+                                </div>
+                                <a href="{% url 'payment' %}" class="btn btn-primary btn-block checkout-btn">Continue To Checkout</a>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <h2 style='color: #00b533;font-size: 65px;' class="title">Thanks for your purchase!</h2>
+                    <p> The course has been added to your courselist - please check 
+                        <a class='text-decoration-none' href="{% url 'enrolled_courses' %}">Course-List</a>
+                    </p>
+                {% endif %}
+            {% endwith %}
+        </div>
+    </section>
+
+{% endblock %}

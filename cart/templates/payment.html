@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+
+    <div class="container" >
+    <br><br><br>
+        <div class="row"> 
+            <div style="padding-right: 120px;">
+                <div>
+                    <div class="" style="height:500px; width:500px;">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">
+                                    Payment Details
+                                </h3>
+                            </div>
+                        <div class="panel-body">
+                            <form action="" method="POST">
+                                {% csrf_token %}
+                                {{form|crispy}}
+                            </form>
+                        </div>
+                    </div>
+                    <div class="d-grid">
+                    <a href="{% url 'cart_checkout' %}" class="btn btn-outline-info" >Pay</a>
+                </div>    
+            </div>
+        </div>
+    </div>
+      
+{% endblock %}
