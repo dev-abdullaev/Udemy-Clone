@@ -48,7 +48,7 @@ class CourseDetailView(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         course = self.get_object(self.get_queryset())
-        context['teacher_courses'] = Course.objects.filter(teacher__id=self.request.user.id).count()
+        context['teacher_courses'] = Course.objects.filter(teacher__id=self.request.user.is_staff).count()
         context['student_for_every_course'] = Enroll.objects.filter(course__slug=self.kwargs["slug"]).count()
         context['form'] = CourseReviewForm()
 
