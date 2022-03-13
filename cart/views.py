@@ -1,4 +1,3 @@
-
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
@@ -15,15 +14,9 @@ from .models import Payment
 
 @login_required
 def payment(request):
-    form = PaymentForm()
+    cart = Cart(request)
 
-    if request.method == 'POST':
-        form = PaymentForm(request.POST)
-        if form.is_valid():
-            form.save()
-
-
-    context = {'form': form}
+    context = {'cart': cart}
     return render(request, 'payment.html', context)
 
 
@@ -52,6 +45,7 @@ def cart_detail(request):
 
 @login_required(login_url='/login')
 def cart_checkout(request):
+
     carts = Cart(request)
     for cart in carts:
         course = cart['course']
@@ -59,3 +53,10 @@ def cart_checkout(request):
     messages.success(request, 'Successfully checked out!')
     carts.clear()
     return redirect(reverse_lazy('cart_detail'))
+
+
+
+
+
+
+
