@@ -20,6 +20,7 @@ class CustomUserCreationForm(UserCreationForm):
     def save(self, commit=True):
         user = super().save(commit=False)
         user.is_active = True
+        user.is_student = True
         if commit:
             user.save()
         return user
@@ -47,7 +48,8 @@ class TeacherForm(UserCreationForm):
     
     def save(self, commit=True):
         user = super().save(commit=False)
-        user.is_staff = False
+        user.is_active = False
+        user.is_student = False
         if commit:
             user.save()
         return user

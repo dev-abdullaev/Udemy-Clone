@@ -1,3 +1,4 @@
+from multiprocessing import context
 from urllib import request
 from django.urls import reverse_lazy
 from django.contrib.auth import login
@@ -7,36 +8,56 @@ from .forms import CustomUserCreationForm, UserUpdateForm, TeacherForm, TeacherU
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .models import CustomUser
-from django.db.models import Count
+from .models import CustomUser, Teacher
+from django.db.models import Count, Sum
 from course.models import Course, Enroll
 
 
 
 @login_required
-def student_and_admin_dashboard(request):
-    # These are related to students
+def student_dashboard(request):
     enrolled_courses = Course.objects.all().filter(enroll__student=request.user)
     std_course_count = Enroll.objects.all().filter(student__id=request.user.id).count()
-    completed_course_count = Course.objects.filter(is_completed=True).count() 
-    total_students = Enroll.objects.annotate(Count('student')).count()
-
-    teacher_course_count = Course.objects.filter(teacher__id=request.user.is_staff).count()
-    teacher_courses = Course.objects.filter(teacher__id=request.user.is_staff)
-    enrolls = Enroll.objects.all()
 
 
     context = {
-        'enrolls': enrolls,
         'enrolled_courses': enrolled_courses,
         'std_course_count':std_course_count,
-        'total_students': total_students,
-        'completed_course_count':completed_course_count,
-        'teacher_course_count': teacher_course_count,
-        'teacher_courses':teacher_courses
+
     }
 
-    return render(request, 'student/dashboard.html', context)
+    return render(request, 'dashboards/student_dashboard.html', context)
+
+
+@login_required
+def teacher_dashboard(request):
+    teacher_course_count = Course.objects.filter(teacher__pk=request.user.pk).count()
+    teacher_courses = Course.objects.filter(teacher__pk=request.user.pk)
+   
+
+
+    context = {
+        'teacher_course_count': teacher_course_count,
+        'teacher_courses':teacher_courses,
+    }
+
+    return render(request, 'dashboards/teacher_dashboard.html', context)
+
+
+@login_required
+def admin_dashboard(request):
+    teachers = Teacher.objects.all()
+    courses = Course.objects.all()
+    students = Enroll.objects.select_related().annotate(std_count=Count('student_id')).count()
+            
+
+    context = {
+        'students': students,
+        "courses": courses,
+        'teachers':teachers
+    }
+
+    return render(request, 'dashboards/admin_dashboard.html', context)
 
 
 class SignUpView(CreateView):
@@ -104,20 +125,19 @@ class TeacherProfileUpdateView(LoginRequiredMixin, View):
             return redirect("profile")
 
 
-class UnapprovedUserListView(LoginRequiredMixin, ListView):
-    model = CustomUser
-    template_name = "student/unapproved_teachers.html"
-    context_object_name = 'teachers'
+@login_required
+def UnapprovedUserListView(request):
+    teachers = CustomUser.objects.all().filter(is_active=False, is_teacher=False)
 
-    def get_queryset(self):
-        qs = super().get_queryset().filter(is_active=False, is_staff=False)
-        return qs
+
+    context = {'teachers': teachers}
+    return render(request, 'dashboards/unapproved_teachers.html', context)
 
 
 def approve_teacher(request, pk):
     teacher = CustomUser.objects.get(id=pk)
     teacher.is_active = True
-    teacher.is_staff = True
+    teacher.is_teacher = True
 
     teacher.save()
     

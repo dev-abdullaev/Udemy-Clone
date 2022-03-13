@@ -31,7 +31,7 @@ class CourseForm(forms.ModelForm):
         model = Course
         fields = [
             'category', 'section', 'name', 'description', 'requirements', 'to_whom', 'teacher',
-            'image', 'price', 'video_link', 'difficulty', 'is_active', 'is_completed'
+            'image', 'price', 'video_link', 'difficulty', 'is_active'
         ]
         widgets = {
           'description': Textarea(attrs={'rows':5, 'cols':20}),

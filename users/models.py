@@ -2,19 +2,23 @@ from urllib import request
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.db.models.signals import post_save
-from django.dispatch import receiver
 
 
 
 class CustomUser(AbstractUser):
-    profile_picture = models.ImageField(default="default_pic.png", upload_to='users/')
-    is_active = models.BooleanField(default=False)
+    profile_picture = models.ImageField(default="user_default.png", upload_to='users/')
+    is_teacher = models.BooleanField(default=False)
+    is_student = models.BooleanField(default=False)
+    
+    
 
 
 class Teacher(models.Model):
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, primary_key=True)
 
     USERNAME_FIELD = 'username'
+
+    
 
 
     def __str__(self):

@@ -50,8 +50,7 @@ class Course(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     is_active = models.BooleanField(default=True)
-    is_completed = models.BooleanField(default=False)
-
+    
 
     def __str__(self):
         return self.name
@@ -93,11 +92,6 @@ class Course(models.Model):
         return get_timer(length, type='short')
 
 
-    def get_completed_course(self):
-        total = Course.objects.filter(customuser=self.is_completed).count()
-        return total
-
-
 class Section(models.Model):
     name = models.CharField(max_length=250)
     video = models.ManyToManyField("Video")
@@ -125,27 +119,8 @@ class Video(models.Model):
     def __str__(self):
         return self.name
 
-
-    # def get_video_length(self):
-    #     try:
-    #         video = mp4(self.files)
-    #         return video.info.length
-    #     except mp4.MP4StreamInfoError:
-    #         return 0.0
-
-
-
     def get_video_length_time(self):
         return get_timer(self.length)
-
-
-    # def get_absolute_url(self):
-    #     return 'http://localhost:8000'+self.files
-
-
-    # def save(self, *args, **kwargs):
-    #     self.length = self.get_video_length()
-    #     return super().save(*args, **kwargs)  
 
 
 class CourseReview(models.Model):
@@ -173,22 +148,7 @@ class Enroll(models.Model):
     
 
 
-    def get_std_num_for_every_course(self, slug):
-        stds = Enroll.objects.filter(course__slug=self.slug).count()
-        return stds
 
-
-
-
-
-# def send_notification_to_admin(sender, instance, created, **kwargs):
-#     admin_email = 'developer.abdullaev@gmail.com'
-#     if created:
-#         message = "I want to teach on Educative"
-#         subject = "Teaching on Educative"
-#         send_mail(subject, message, admin_email, [instance.email])
-
-# post_save.connect(send_notification_to_admin, sender=Teacher)
 
 
 

@@ -1,6 +1,6 @@
 from django.db.models import Count
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -22,6 +22,17 @@ class CourseListView(LoginRequiredMixin, ListView):
     model = Course
     template_name = "course/all_courses.html"
     context_object_name = 'courses'
+
+
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['is_student'] = False
+
+        if self.request.user.is_authenticated:
+            context['is_student'] = True
+
+        return context
 
 
 class CourseDetailView(LoginRequiredMixin, DetailView):
@@ -48,7 +59,7 @@ class CourseDetailView(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         course = self.get_object(self.get_queryset())
-        context['teacher_courses'] = Course.objects.filter(teacher__id=self.request.user.is_staff).count()
+        context['teacher_courses'] = Course.objects.filter(teacher__pk=self.request.user.pk).count()
         context['student_for_every_course'] = Enroll.objects.filter(course__slug=self.kwargs["slug"]).count()
         context['form'] = CourseReviewForm()
 
@@ -70,7 +81,8 @@ class CourseDetailView(LoginRequiredMixin, DetailView):
 @login_required
 def watch_course(request, slug):
     course = Course.objects.get(slug=slug)
-    video = Video.objects.all()
+    videos = Video.objects.all()
+    
 
     if request.user.is_authenticated:
         if Enroll.objects.filter(course=course, student=request.user).exists():
@@ -81,7 +93,7 @@ def watch_course(request, slug):
 
     
     context = {
-        'course': course, 'video': video, 'is_paid': is_paid
+        'course': course, 'videos': videos, 'is_paid': is_paid
     }
     return render(request, 'course/watch_course.html', context)
 
@@ -93,17 +105,25 @@ class CourseCreateView(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy('sections')
 
 
-class CourseUpdateView(LoginRequiredMixin, UpdateView):
+class CourseUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Course
     template_name = "course/update_course.html"
     form_class = CourseForm
     success_url = reverse_lazy('sections')
 
+    def test_func(self):
+        obj = self.get_object()
+        return obj.teacher.pk == self.request.user.pk
 
-class CourseDeleteView(LoginRequiredMixin, DeleteView):
+
+class CourseDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Course
     template_name = "course/delete_course.html"
     success_url = reverse_lazy('sections')
+
+    def test_func(self):
+        obj = self.get_object()
+        return obj.teacher.pk == self.request.user.pk
 
 
 class SectionCreateView(LoginRequiredMixin, CreateView):
@@ -257,13 +277,13 @@ class CategoryUpdateView(LoginRequiredMixin, UpdateView):
     template_name = "category/update_cat.html"
     form_class = CategoryForm
     success_url = reverse_lazy('categories')
-
+ 
 
 class CategoryDeleteView(LoginRequiredMixin, DeleteView):
     model = Category
     template_name = "category/delete_cat.html"
     success_url = reverse_lazy('categories')
-
+    
 
 def searchView(request):
     query = request.GET.get("query", "")
