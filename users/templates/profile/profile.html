@@ -5,7 +5,7 @@
 {% block content %}
     <div class="container">
         <div class="row">
-            {% if request.user.is_authenticated and not request.user.is_superuser and not request.user.is_staff %}
+            {% if request.user.is_student %}
                 <div class="row mb-2">
                     <div class="col-2">
                         <img style='border-radius: 50%;width: 150px; height: 150px; ' src="{{request.user.profile_picture.url}}" alt="">
@@ -23,7 +23,7 @@
 
                             <ul class="nav nav-pills flex-column mb-auto">
                                 <li>
-                                    <a class="nav-link" href="{% url 'student_admin_dashboard' %}">
+                                    <a class="nav-link" href="{% url 'student_dashboard' %}">
                                         <i style='font-size: 20px' class="bi bi-speedometer2"></i>&nbsp;&nbsp; Dashboard
                                     </a>
                                 </li>
@@ -96,7 +96,7 @@
                         </div>
                     </div>
                 </div>
-            {% elif request.user.is_staff %}
+            {% elif request.user.is_teacher %}
                 <div class="row mb-2">
                     <div class="col-2">
                         <img style='border-radius: 50%;width: 150px; height: 150px; ' src="{{request.user.profile_picture.url}}" alt="">
@@ -114,7 +114,93 @@
 
                             <ul class="nav nav-pills flex-column mb-auto">
                                 <li>
-                                    <a class="nav-link" href="{% url 'student_admin_dashboard' %}">
+                                    <a class="nav-link" href="{% url 'teacher_dashboard' %}">
+                                        <i style='font-size: 20px' class="bi bi-speedometer2"></i>&nbsp;&nbsp; Dashboard
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{% url 'profile' %}" class="nav-link" >
+                                        <i style='font-size: 20px' class="bi bi-person"></i>&nbsp;&nbsp; My Profile
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'logout' %}" class="nav-link">
+                                        <i style='font-size: 20px' class="bi bi-box-arrow-in-right"></i>&nbsp;&nbsp; Logout
+                                    </a>
+                                </li>
+                            </ul>
+                            <hr>
+                        </div>
+                    </div>
+
+                    <div class="col-9">
+                        <div class="row mx-4">
+                            <div class="col-8">
+                                <div class="row p-2">
+                                    <div class="col-5">
+                                        <span>Registration Date </span>
+                                    </div>
+                                    <div class="col-6">
+                                        <span>{{request.user.date_joined}}</span>
+                                    </div>
+                                </div>
+                                <div class="row p-2">
+                                    <div class="col-5">
+                                        <span>First Name</span>
+                                    </div>
+                                    <div class="col-6">
+                                        <span>{{request.user.first_name}} </span>
+                                    </div>
+                                </div>
+                                <div class="row p-2">
+                                    <div class="col-5">
+                                        <span>Last Name</span>
+                                    </div>
+                                    <div class="col-6">
+                                        <span>{{request.user.last_name}}</span>
+                                    </div>
+                                </div>
+                                <div class="row p-2">
+                                    <div class="col-5">
+                                        <span>Username</span>
+                                    </div>
+                                    <div class="col-6">
+                                        <span>{{request.user.username}}</span>
+                                    </div>
+                                </div>
+                                <div class="row p-2">
+                                    <div class="col-5">
+                                        <span>Email</span>
+                                    </div>
+                                    <div class="col-6">
+                                        <span>{{request.user.email}}</span>
+                                    </div>
+                                </div>
+                                <br>
+                                <a style='width: 450px;' class="btn btn-primary" href="{% url 'profile_edit' %}">Edit profile</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="row mb-2">
+                    <div class="col-2">
+                        <img style='border-radius: 50%;width: 150px; height: 150px; ' src="{{request.user.profile_picture.url}}" alt="">
+                    </div>
+                    <div class="col-8" style='margin-left:-20px'>
+                        <h1 class='my-5'>{{request.user.first_name}} {{request.user.last_name}}</h1>
+                    </div>
+                    
+                </div>
+                <hr>
+                    
+                <div class="row" >
+                    <div class="col-3" style="border-right: 1px solid ; margin-top: -17px" >
+                        <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-white" style="width: 267px; border-right: 1px solid black">
+
+                            <ul class="nav nav-pills flex-column mb-auto">
+                                <li>
+                                    <a class="nav-link" href="{% url 'admin_dashboard' %}">
                                         <i style='font-size: 20px' class="bi bi-speedometer2"></i>&nbsp;&nbsp; Dashboard
                                     </a>
                                 </li>

@@ -1,33 +1,242 @@
 {% extends 'base.html' %}
-{% load crispy_forms_tags %}
+{% load static %}
 
 {% block content %}
 
+<style>
 
-    <div class="container" >
-    <br><br><br>
-        <div class="row"> 
-            <div style="padding-right: 120px;">
-                <div>
-                    <div class="" style="height:500px; width:500px;">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h3 class="panel-title">
-                                    Payment Details
-                                </h3>
-                            </div>
-                        <div class="panel-body">
-                            <form action="" method="POST">
-                                {% csrf_token %}
-                                {{form|crispy}}
-                            </form>
-                        </div>
-                    </div>
-                    <div class="d-grid">
-                    <a href="{% url 'cart_checkout' %}" class="btn btn-outline-info" >Pay</a>
-                </div>    
+.group {
+    background: white;
+    box-shadow: 0 7px 14px 0 rgba(49,49,93,0.10),
+                0 3px 6px 0 rgba(0,0,0,0.08);
+    border-radius: 4px;
+    margin-bottom: 20px;
+  }
+  
+  label {
+    position: relative;
+    color: #8898AA;
+    font-weight: 300;
+    height: 40px;
+    line-height: 40px;
+    margin-left: 20px;
+    display: flex;
+    flex-direction: row;
+  }
+  
+  .group label:not(:last-child) {
+    border-bottom: 1px solid #F0F5FA;
+  }
+  
+  label > span {
+    width: 80px;
+    text-align: right;
+    margin-right: 30px;
+  }
+  
+  .field {
+    background: transparent;
+    font-weight: 300;
+    border: 0;
+    color: #31325F;
+    outline: none;
+    flex: 1;
+    padding-right: 10px;
+    padding-left: 10px;
+    cursor: text;
+  }
+  
+  .field::-webkit-input-placeholder { color: #CFD7E0; }
+  .field::-moz-placeholder { color: #CFD7E0; }
+  
+</style>
+
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="order-details" style="width: 50%;margin: auto;">
+            <center><h3 class="title mt-3">Payment Details</h3></center> <br>
+            <div class="col-lg-10 col-md-10 col-sm-12">
+                <div class="group">
+                    <label>
+                    <span>Card</span>
+                    <div id="card-element" class="field"></div>
+                    </label>
+                </div>
+            </div>
+            <div class="payment-box col-lg-10 col-md-10 col-sm-12">
+                <div class="text-center d-grid">
+                    <a id="pay-now" href='{% url 'cart_checkout' %}' class="btn btn-primary" onclick="cardcreate()">Submit</a>
+                </div>
+                <br>
+                <br>
+                </div>
             </div>
         </div>
     </div>
-      
+</div>
+
+
+
+<script src="https://polyfill.io/v3/polyfill.min.js?version=3.52.1&features=fetch"></script>
+<script src="https://js.stripe.com/v3/"></script>
+<script
+  src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous">
+</script>
+
+  
+
+<script type="text/javascript">
+
+var stripe = Stripe('pk_test_51Ial8LItxjOeLNkscwj6vFQGFUk2Ep3xORS3tozZXjnRwfsuhJYMcv4MdmnJ02uOD2xHgQJChqWncSEsD25kviXF00bhOE7UAr');
+var elements = stripe.elements();
+
+var card = elements.create('card', {
+  style: {
+    base: {
+      iconColor: '#666EE8',
+      color: '#31325F',
+      lineHeight: '40px',
+      fontWeight: 300,
+      fontFamily: 'Helvetica Neue',
+      fontSize: '15px',
+
+      '::placeholder': {
+        color: '#CFD7E0',
+      },
+    },
+  }
+});
+card.mount('#card-element');
+
+function setOutcome(result) {
+  var successElement = document.querySelector('.success');
+  var errorElement = document.querySelector('.error');
+  successElement.classList.remove('visible');
+  errorElement.classList.remove('visible');
+
+  if (result.token) {
+    // Use the token to create a charge or a customer
+    // https://stripe.com/docs/charges
+    successElement.querySelector('.token').textContent = result.token.id;
+    successElement.classList.add('visible');
+    $("#pay-now").text("You Have Paid")
+  } else if (result.error) {
+  	$("#pay-now").removeAttr("disabled")
+    errorElement.textContent = result.error.message;
+    errorElement.classList.add('visible');
+  }
+}
+
+card.on('change', function(event) {
+  setOutcome(event);
+});
+
+document.querySelector('form').addEventListener('submit', function(e) {
+  e.preventDefault();
+  $("#pay-now").attr("disabled", "disabled");
+  var form = document.querySelector('form');
+  var extraDetails = {
+    name: form.querySelector('input[name=cardholder-name]').value,
+  };
+  card.update({disabled: true});
+  // using a timeout to demnostrate a delay.
+  setTimeout(function() {
+    stripe.createToken(card, extraDetails).then(setOutcome);
+  }, 2000)
+});
+
+
+    {% comment %} let csrftoken = Cookies.get('csrftoken');
+    let price = document.getElementById('price').value;
+
+    let token = undefined
+    function cardcreate() {
+        let number = document.getElementById('number').value;
+        let expire = document.getElementById('expire').value;
+        var cardData = {
+            "id": 123,
+            "params": {
+                "card": { "number": number, "expire": expire },
+                "amount": parseInt(`${price.replace(".", "")}`),
+                "save": true
+            }
+        }
+
+
+        fetch("http://127.0.0.1:8000/payme/card/create/", {
+            method: "POST",
+            body: JSON.stringify(cardData),
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": csrftoken
+            },
+
+        }
+        )
+            .then((response) => response.json())
+            .then((json) => {
+                token = json.token
+            })
+    }
+
+    function checkcode() {
+        var code = document.getElementById("code").value;
+
+        let _data = {
+            id: 123,
+            params: {
+                token: token,
+                code: code,
+            },
+        };
+
+        fetch("http://127.0.0.1:8000/en/api/payme/card/verify/", {
+            method: "POST",
+            body: JSON.stringify(_data),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8",
+                "X-CSRFToken": csrftoken
+            },
+
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                data = {
+                    id: 123,
+                    params: {
+                        token: token,
+                        amount: parseInt(`${price.replace(".", "")}`),
+                        account: {
+                            order_id: 1,
+                        },
+                    },
+                };
+
+                fetch(
+                    "http://127.0.0.1:8000/en/api/payme/payment/",
+                    {
+                        method: "POST",
+                        body: JSON.stringify(data),
+                        headers: {
+                            "Content-type":
+                                "application/json; charset=UTF-8",
+                            "X-CSRFToken": csrftoken
+                        },
+                    }
+                )
+                    .then((response) => response.json())
+                    .then((json) => {
+                        console.log(json)
+                    })
+                    .catch(err => {
+                        console.log(err)
+                    })
+            })
+            .catch((err) => console.log(err));
+    } {% endcomment %}
+</script>
+
 {% endblock %}

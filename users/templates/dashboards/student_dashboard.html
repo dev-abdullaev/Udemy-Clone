@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="row mb-2">
+                <div class="col-2">
+                    <img style='border-radius: 50%;width: 150px; height: 150px; ' src="{{request.user.profile_picture.url}}" alt="">
+                </div>
+                <div class="col-8" style='margin-left:-20px'>
+                    <h1 class='my-5'>{{request.user.first_name}} {{request.user.last_name}}</h1>
+                </div>
+                
+            </div>
+            <hr>
+        
+            <div class="row" >
+                <div class="col-3" style="border-right: 1px solid ; margin-top: -17px" >
+                    <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-white" style="width: 280px; border-right: 1px solid black">
+
+                        <ul class="nav nav-pills flex-column mb-auto">
+                            <li>
+                                <a class="nav-link" href="{% url 'student_dashboard' %}">
+                                    <i style='font-size: 20px' class="bi bi-speedometer2"></i>&nbsp;&nbsp; Dashboard
+                                </a>
+                                </li>
+                            <li class="nav-item">
+                                <a href="{% url 'profile' %}" class="nav-link" >
+                                    <i style='font-size: 20px' class="bi bi-person"></i>&nbsp;&nbsp; My Profile
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="nav-link">
+                                    <i style='font-size: 20px' class="bi bi-bag-check"></i>&nbsp;&nbsp; Purchase History
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'logout' %}" class="nav-link">
+                                    <i style='font-size: 20px' class="bi bi-box-arrow-in-right"></i>&nbsp;&nbsp; Logout
+                                </a>
+                            </li>
+                        </ul>
+                        <hr>
+                    </div>
+                </div>
+
+                <div class="col-7">
+                    <div class="row mx-4 justify-content-center">
+                        <div class="col">
+                            <h1 class='text-center' >Dashboard</h1>
+                        </div>
+                        <div class="row">
+                            <div class="col my-2">
+                                {% if std_course_count > 0 %}
+                                    <table class='table table-bordered'>
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">#</th>
+                                                <th scope="col">Course Name</th>
+                                                
+                                            </tr>
+                                        </thead>
+                                        {% for course in enrolled_courses %}
+                                            <tbody>
+                                                <th scope="row">{{forloop.counter}}</th>
+                                                    <td>
+                                                        <a class='text-decoration-none' 
+                                                            href="{% url 'course_detail' course.slug %}">{{course.name}}
+                                                        </a>
+                                                    </td>
+                                                    
+                                                </tr>
+                                            </tbody>
+                                        {% endfor %}
+                                    </table>
+                                {% else %}
+                                    <h6>You did not purcahse any course!</h6>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+{% endblock content %}

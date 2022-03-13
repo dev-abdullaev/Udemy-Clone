@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load embed_video_tags %}
 
 
 {% block content %}
@@ -16,23 +17,39 @@
                         </button>
                         </h2>
                         
-                        <div id="collapseOne{{ section.id }}" class="accordion-collapse collapse show" aria-labelledby="headingOne{{ section.id }}" data-bs-parent="#accordionExample">
+                        <div id="collapseOne{{ section.id }}" class="accordion-collapse collapse" aria-labelledby="headingOne{{ section.id }}" data-bs-parent="#accordionExample">
                             <div class="accordion-body">
                                 {% for video in section.video.all %}
-                                    {% if is_paid or request.user.is_staff %}
-                                        <a class='text-decoration-none' href="{% url 'watch_course' course.slug  %}">
-                                            <i style='font-size: 20px' class="bi bi-play-circle"></i> 
-                                            {{video.name|truncatechars:20}}
-                                            <span style='margin-left:250px'>{{video.get_video_length_time}}</span>
-                                            <i class="bi bi-unlock"></i>
-                                        </a><br><br>
+                                    {% if is_paid or request.user.is_superuser or request.user.is_teacher %}
+                                    <div class="row">
+                                        <div style='margin-bottom:10px' class="col-10">
+                                            <a target='myIframe' class='text-decoration-none' href="{{video.link}}">
+                                                <i style='font-size: 20px' class="bi bi-play-circle"></i> 
+                                                {{video.name|truncatechars:25}}
+                                                
+                                            </a>
+                                        </div>
+                                        <div class="col-2">
+                                            <span class="text-primary">{{video.get_video_length_time}}
+                                                <i class="bi bi-unlock"></i>
+                                            </span>
+                                        </div>
+                                    </div>
                                     {% else %}
-                                        <a class='text-decoration-none btn disabled' href="{% url 'watch_course' course.slug  %}">
-                                            <i style='font-size: 20px' class="bi bi-play-circle"></i> 
-                                            {{video.name}}
-                                            <span style='margin-left:230px'>{{video.get_video_length_time}}</span>
-                                            <i class="bi bi-lock"></i>
-                                        </a><br><br>
+                                        <div class="row">
+                                            <div style='margin-bottom:10px' class="col-9">
+                                                <a class='text-decoration-none btn disabled' href="{{video.link}}">
+                                                    <i style='font-size: 20px' class="bi bi-play-circle"></i> 
+                                                    {{video.name|truncatechars:30}}
+                                                    
+                                                </a>
+                                            </div>
+                                            <div class="col-3">
+                                                <span class="btn disabled">{{video.get_video_length_time}}
+                                                    <i class="bi bi-lock"></i>
+                                                </span>
+                                            </div>
+                                        </div>
                                     {% endif %}
                                 {% endfor %}
                             </div>
@@ -42,14 +59,15 @@
             {% endfor %}     
         </div>
         <div class="col-7 my-3 p-4">
-            <iframe 
+            <iframe name="myIframe" width="740" height="350" frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; 
+                encrypted-media; gyroscope; picture-in-picture" allowfullscreen
                 {% for section in course.section.all %}
                     {% for video in section.video.all %}
                         src="{{video.link}}"
                     {% endfor %}
-                {% endfor %}
-                allowfullscreen="" width="750" height="400" frameborder="0">
-            </iframe>  
+                {% endfor %}>
+            </iframe> 
         </div>
     </div>
 
