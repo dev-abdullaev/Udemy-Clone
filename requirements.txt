@@ -2,8 +2,13 @@ asgiref==3.5.0
 certifi==2021.10.8
 charset-normalizer==2.0.12
 crispy-bootstrap5==0.6
-Django==4.0.3
+Django>=3.1,<4.0
 django-crispy-forms==1.14.0
+<<<<<<< HEAD
+=======
+django-embed-video==1.4.1
+django-environ-2==2.3.0
+>>>>>>> 477cd81b665e2add0768c0e368c5409730700ca6
 idna==3.3
 Pillow==9.0.1
 psycopg2-binary==2.9.3
