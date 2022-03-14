@@ -10,13 +10,6 @@ env = environ.Env(
     DEBUG=(bool, True)
 )
 
-<<<<<<< HEAD
-
-# DATABASES['default'] = dj_database_url.parse('postgres://postgres:postgres@localhost:5432/educative', conn_max_age=600)
-=======
-# DATABASE_URL['default'] = dj_database_url.parse('postgres://pdzxsprnkqqibn:136bf599b073b4d06484a2e225f3a67a570f95e445b2ecf487e8cef4f69c482a@ec2-3-209-61-239.compute-1.amazonaws.com:5432/de5g9vf62stsf4', conn_max_age=600)
->>>>>>> 477243709f2762304a51f32cd194dedeaeafaf58
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
