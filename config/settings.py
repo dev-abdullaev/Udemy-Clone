@@ -148,5 +148,3 @@ LOGIN_URL = "login"
 
 
 CART_SESSION_SLUG = 'cart'
-
-
