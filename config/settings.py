@@ -2,10 +2,6 @@ import os
 from pathlib import Path
 
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 4736c1bfa3ac4d211345de30bfe9a66594080e4c
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -14,11 +10,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-<<<<<<< HEAD
+
 SECRET_KEY = 'lsgperojtoperjtop65drg'
-=======
-SECRET_KEY = 'lsgperojtoperjtop65drg'
->>>>>>> 4736c1bfa3ac4d211345de30bfe9a66594080e4c
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = 'True'
@@ -153,20 +146,7 @@ LOGOUT_REDIRECT_URL = "login"
 LOGIN_URL = "login"
 
 
-<<<<<<< HEAD
-
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_PORT = 587
-# EMAIL_USE_TLS = True
-# EMAIL_USE_SSL = False
-# EMAIL_HOST_USER = env('HOST_USER')
-# EMAIL_HOST_PASSWORD = env('HOST_PASSWORD')
-# DEFAULT_FROM_EMAIL = env('HOST_USER')
-
-
 
 CART_SESSION_SLUG = 'cart'
-=======
-CART_SESSION_SLUG = 'cart'
->>>>>>> 4736c1bfa3ac4d211345de30bfe9a66594080e4c
+
+
