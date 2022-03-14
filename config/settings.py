@@ -4,7 +4,6 @@ import dj_database_url
 from pathlib import Path
 
 
-
 env = environ.Env(
     # set casting, default value
     DEBUG=(bool, True)
