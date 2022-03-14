@@ -141,37 +141,39 @@
                                         <div id="collapseOne{{ section.id }}" class="accordion-collapse collapse" aria-labelledby="headingOne{{ section.id }}" data-bs-parent="#accordionExample">
                                             <div class="accordion-body">
                                                 {% for video in section.video.all %}
-                                                    {% if is_paid or request.user.is_teacher or request.user.is_superuser %}
-                                                        {% if course.teacher.pk == request.user.pk %}
-                                                            <div style='margin-bottom:0px' class="row">
-                                                                <div class="col-10">
-                                                                    <a class='text-decoration-none' href="{% url 'watch_course' course.slug  %}">
-                                                                        <i style='font-size: 20px' class="bi bi-play-circle"></i> 
-                                                                        {{video.name|truncatechars:30}}
-                                                                    </a><br><br>
+                                                    {% if is_paid or request.user.is_superuser or request.user.is_teacher %}
+                                                        {% for enroll in course.enroll_set.all %}
+                                                            {% if course.teacher.pk == request.user.pk or enroll.student.pk == request.user.pk  %}
+                                                                <div style='margin-bottom:0px' class="row">
+                                                                    <div class="col-10">
+                                                                        <a class='text-decoration-none' href="{% url 'watch_course' course.slug  %}">
+                                                                            <i style='font-size: 20px' class="bi bi-play-circle"></i> 
+                                                                            {{video.name|truncatechars:30}}
+                                                                        </a><br><br>
+                                                                    </div>
+                                                                    <div class="col-2">
+                                                                        <span class='text-primary'>{{video.get_video_length_time}}
+                                                                            <i class="bi bi-unlock"></i>
+                                                                        </span>
+                                                                        
+                                                                    </div>
                                                                 </div>
-                                                                <div class="col-2">
-                                                                    <span class='text-primary'>{{video.get_video_length_time}}
-                                                                        <i class="bi bi-unlock"></i>
-                                                                    </span>
-                                                                    
+                                                            {% else %}
+                                                                <div style='margin-bottom:0px' class="row ">
+                                                                    <div class="col-10">
+                                                                        <a class='text-decoration-none btn disabled' href="{% url 'watch_course' course.slug  %}">
+                                                                            <i style='font-size: 20px' class="bi bi-play-circle"></i> 
+                                                                            {{video.name|truncatechars:30}}
+                                                                        </a>
+                                                                    </div>
+                                                                    <div class="col-2">
+                                                                        <span class="btn disabled">{{video.get_video_length_time}}
+                                                                            <i class="bi bi-lock"></i>
+                                                                        </span>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                        {% else %}
-                                                            <div style='margin-bottom:0px' class="row ">
-                                                                <div class="col-10">
-                                                                    <a class='text-decoration-none btn disabled' href="{% url 'watch_course' course.slug  %}">
-                                                                        <i style='font-size: 20px' class="bi bi-play-circle"></i> 
-                                                                        {{video.name|truncatechars:30}}
-                                                                    </a>
-                                                                </div>
-                                                                <div class="col-2">
-                                                                    <span class="btn disabled">{{video.get_video_length_time}}
-                                                                        <i class="bi bi-lock"></i>
-                                                                    </span>
-                                                                </div>
-                                                            </div>
-                                                        {% endif %}
+                                                            {% endif %}
+                                                        {% endfor %}
                                                     {% else %}
                                                         <div style='margin-bottom:0px' class="row ">
                                                             <div class="col-10">
