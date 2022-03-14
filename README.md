@@ -1,3 +1,3 @@
 # Udemy-Clone
-Live Demo - Coming sooon...
+Live Demo - https://educative-online-platform.herokuapp.com
 
