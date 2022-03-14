@@ -159,5 +159,4 @@ LOGOUT_REDIRECT_URL = "login"
 LOGIN_URL = "login"
 
 
-
 CART_SESSION_SLUG = 'cart'
