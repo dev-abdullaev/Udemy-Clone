@@ -1,5 +1,6 @@
 import environ
 import os
+import dj_database_url
 from pathlib import Path
 
 
@@ -8,6 +9,9 @@ env = environ.Env(
     # set casting, default value
     DEBUG=(bool, False)
 )
+
+
+DATABASES['default'] = dj_database_url.parse('postgres://postgres:postgres@localhost:5432/educative', conn_max_age=600)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
