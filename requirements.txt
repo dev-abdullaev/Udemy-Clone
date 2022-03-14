@@ -4,11 +4,8 @@ charset-normalizer==2.0.12
 crispy-bootstrap5==0.6
 Django==4.0.3
 django-crispy-forms==1.14.0
-<<<<<<< HEAD
-=======
 django-embed-video==1.4.1
 django-environ-2==2.3.0
->>>>>>> 4736c1bfa3ac4d211345de30bfe9a66594080e4c
 idna==3.3
 Pillow==9.0.1
 psycopg2-binary==2.9.3
