@@ -1,20 +1,27 @@
+import environ
 import os
 from pathlib import Path
 
 
+
+env = environ.Env(
+    # set casting, default value
+    DEBUG=(bool, False)
+)
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-
-SECRET_KEY = 'lsgperojtoperjtop65drg'
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = 'True'
+DEBUG = env('DEBUG')
 
 SESSION_COOKIE_SECURE = True
 
@@ -37,7 +44,6 @@ INSTALLED_APPS = [
 
     'crispy_forms',
     "crispy_bootstrap5",
-    'embed_video',
 
 ]
 
@@ -84,10 +90,10 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     "default": {"ENGINE": "django.db.backends.postgresql_psycopg2", 
-    "NAME": "postgres",
-    'USER': "postgres",
-    'PASSWORD': 'postgres',
-    'HOST': 'localhost',
+    "NAME": env('DB_NAME'),
+    'USER': env('DB_USER'),
+    'PASSWORD': env('DB_PASSWORD'),
+    'HOST': env('DB_HOST'),
     'PORT': '5432'
     }
 }
