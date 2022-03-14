@@ -1,2 +1,2 @@
 # Udemy-Clone
-Live Demo - http://educativeonlineplatform.pythonanywhere.com/
+Live Demo - Coming sooon...
