@@ -137,7 +137,7 @@ class SectionListView(LoginRequiredMixin, ListView):
     model = Section
     template_name = "section/section_list.html"
     context_object_name = 'sections'
-    paginate_by = 4
+    paginate_by = 10
 
 
 class SectionUpdateView(LoginRequiredMixin, UpdateView):
@@ -157,7 +157,7 @@ class VideoListView(LoginRequiredMixin, ListView):
     model = Video
     template_name = "video/video_list.html"
     context_object_name = 'videos'
-    paginate_by = 4
+    paginate_by = 15
 
 
 class VideoCreateView(LoginRequiredMixin, CreateView):
@@ -263,6 +263,7 @@ class CategoryListView(LoginRequiredMixin, ListView):
     model = Category
     template_name = "category/category_list.html"
     context_object_name = 'categories'
+    paginate_by = 8
 
 
 class CategoryCreateView(LoginRequiredMixin, CreateView):
