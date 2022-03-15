@@ -34,7 +34,10 @@ def cart_remove(request, slug):
     cart = Cart(request)
     course = get_object_or_404(Course, slug=slug)
     cart.remove(course)
-    return redirect('all_courses')
+    if len(cart) == 0:
+        return redirect('all_courses')
+    else:
+        return redirect('cart_detail')
 
 
 @login_required
