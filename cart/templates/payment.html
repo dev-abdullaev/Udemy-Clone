@@ -56,22 +56,35 @@
     <div class="row justify-content-center">
         <div class="order-details" style="width: 50%;margin: auto;">
             <center><h3 class="title mt-3">Payment Details</h3></center> <br>
-            <div class="col-lg-10 col-md-10 col-sm-12">
-                <div class="group">
-                    <label>
-                    <span>Card</span>
-                    <div id="card-element" class="field"></div>
-                    </label>
-                </div>
-            </div>
-            <div class="payment-box col-lg-10 col-md-10 col-sm-12">
+            {% if cart.get_total_price != 0 %}
+              <div class="col-lg-10 col-md-10 col-sm-12">
+                  
+                    <div class="group">
+                        <label>
+                        <span>Card</span>
+                        <div id="card-element" class="field"></div>
+                        </label>
+                    </div>
+              </div>
+              <div class="payment-box col-lg-10 col-md-10 col-sm-12">
+                  <div class="text-center d-grid">
+                      <a id="pay-now" href='{% url 'cart_checkout' %}' class="btn btn-primary" onclick="cardcreate()">Submit</a>
+                  </div>
+                  <br>
+                  <br>
+                  </div>
+              </div>
+            {% else %}
+              <div class="payment-box col-lg-10 col-md-10 col-sm-12">
+                <h4>Just proceed with a sumbit button <br>We won't charge you for FREE Course.</h4>
                 <div class="text-center d-grid">
                     <a id="pay-now" href='{% url 'cart_checkout' %}' class="btn btn-primary" onclick="cardcreate()">Submit</a>
                 </div>
                 <br>
                 <br>
                 </div>
-            </div>
+              </div>
+            {% endif %}
         </div>
     </div>
 </div>

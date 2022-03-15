@@ -44,9 +44,9 @@
                         </div>
                         <div class="col-lg-3">
                             <div class="cart-sidebar">
-                                <div class="total">Total:
+                                <h4 class="total">Total:
                                     $<b id="total_price_of_checking_out">{{ cart.get_total_price | floatformat:2 }}</b>
-                                </div>
+                                </h4>
                                 <a href="{% url 'payment' %}" class="btn btn-primary btn-block checkout-btn">Continue To Checkout</a>
                             </div>
                         </div>

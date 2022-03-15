@@ -14,7 +14,12 @@
                             allowfullscreen>
                         </iframe> 
                         <hr>
-                        <h3>The course is ${{course.price}}</h3>
+                        {% if course.price == 0 %}
+                            <h3>The course is FREE</h3>
+                        {% else %}
+                            <h3>The course is ${{course.price}}</h3>
+                        {% endif %}
+                        
                         <h5>The course includes</h5>
                         <strong class='text-primary'> 
                             <i style='font-size:20px ' class="bi bi-check text-primary"></i>
@@ -33,10 +38,6 @@
                             {% if is_enrolled %}
                                 <div class="d-grid my-2">
                                     <button class="btn btn-primary disabled"> Already Enrolled</button>
-                                </div>
-                            {% elif request.user.is_teacher %}
-                                <div class="d-grid my-2">
-                                    <button class="btn btn-primary disabled">Teachers Can't Enroll</button>
                                 </div>
                             {% elif request.user.is_superuser %}
                                 <div class="d-grid my-2">
