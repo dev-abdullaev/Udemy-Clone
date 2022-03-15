@@ -33,6 +33,7 @@ def student_dashboard(request):
 def teacher_dashboard(request):
     teacher_course_count = Course.objects.filter(teacher__pk=request.user.pk).count()
     teacher_courses = Course.objects.filter(teacher__pk=request.user.pk)
+    
    
 
 
