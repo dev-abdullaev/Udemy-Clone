@@ -21,11 +21,11 @@
                                 {% for video in section.video.all %}
                                     {% if is_paid or request.user.is_superuser or request.user.is_teacher %}
                                     <div class="row">
-                                        <div style='margin-bottom:15px' class="col-10">
+                                        <div style='margin-bottom:7px' class="col-10">
                                             <a target='myIframe' class='text-decoration-none' href="{{video.link}}">
                                                 <i style='font-size: 20px' class="bi bi-play-circle"></i> 
-                                                {{video.name|truncatechars:35}}
-                                                <hr>
+                                                {{video.name|truncatechars:50}}
+                                                
                                             </a>
                                         </div>
                                         <div class="col-2">
@@ -33,13 +33,15 @@
                                                 <i class="bi bi-unlock"></i>
                                             </span>
                                         </div>
+                                        
+                                        <hr class='col-12'>
                                     </div>
                                     {% else %}
                                         <div class="row">
-                                            <div style='margin-bottom:10px' class="col-9">
+                                            <div style='margin-bottom:7px' class="col-9">
                                                 <a class='text-decoration-none btn disabled' href="{{video.link}}">
                                                     <i style='font-size: 20px' class="bi bi-play-circle"></i> 
-                                                    {{video.name|truncatechars:35}}
+                                                    {{video.name|truncatechars:50}}
                                                     
                                                 </a>
                                             </div>
@@ -48,6 +50,7 @@
                                                     <i class="bi bi-lock"></i>
                                                 </span>
                                             </div>
+                                            <hr class='col-12'>
                                         </div>
                                     {% endif %}
                                 {% endfor %}
