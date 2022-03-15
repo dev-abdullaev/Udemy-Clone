@@ -10,7 +10,7 @@
                     <div class="card">
                         <img style='width: 259px; height: 270px;' src="{{ course.image.url }}" class="card-img-top" alt="...">
                         <div class="card-body">
-                        <h5 class="card-title">{{course.name|truncatechars:20}}</h5>
+                        <h6 class="card-title">{{course.name|truncatechars:25}}</h6>
                         <b class="card-text">${{course.price}}</b>
                         <hr>
                         {% if request.user.is_student %}
