@@ -17,7 +17,7 @@
                         </h2>
                         
                         <div id="collapseOne{{ section.id }}" class="accordion-collapse collapse" aria-labelledby="headingOne{{ section.id }}" data-bs-parent="#accordionExample">
-                            <div style='border:none' class="accordion-body">
+                            <div class="accordion-body">
                                 {% for video in section.video.all %}
                                     {% if is_paid or request.user.is_superuser or request.user.is_teacher %}
                                     <div class="row">

@@ -62,18 +62,19 @@
                                     </thead>
                                     {% for teacher in teachers %}
                                         <tbody>
-                                            <tr>
-                                                <td>
-                                                    {% for course in teacher.course_set.all %}
-                                                    <a class='text-decoration-none' 
-                                                        href="{% url 'course_detail' course.slug %}">{{course.name}} <br>
-                                                    </a>
-                                                    {% endfor %}
-                                                </td>
-                                                <td>
-                                                    {{teacher}}
-                                                </td>
-                                            </tr>
+                                            <td>
+                                                {% for course in teacher.course_set.all %}
+                                                    
+                                                <span>{{forloop.counter}} - </span>
+                                                <a class='text-decoration-none' 
+                                                    href="{% url 'course_detail' course.slug %}">{{course.name}} <br>
+                                                </a>
+                                                {% endfor %}
+                                            </td>
+                                            <td>
+                                                {{teacher}}
+                                            </td>
+                                            
                                         </tbody>
                                     {% endfor %}
                                     <h5>Total Students: {{students}}</h5>
