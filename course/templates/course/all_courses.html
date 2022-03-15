@@ -6,7 +6,9 @@
         <div class="row">
             <h1 style='color: #00b533; font-size: 50px' class="text-center mt-3">All Courses</h1>
             {% for course in courses %}
+                
                 <div class="col-lg-3 mb-3 mt-3">
+                    <a class='text-decoration-none' href="{% url 'course_detail' course.slug %}">
                     <div class="card">
                         <img style='width: 259px; height: 270px;' src="{{ course.image.url }}" class="card-img-top" alt="...">
                         <div class="card-body">
@@ -43,7 +45,9 @@
                         {% endif %}
                         </div>
                     </div>
+                    </a>
                 </div>
+                
             {% endfor %}
             
         </div>

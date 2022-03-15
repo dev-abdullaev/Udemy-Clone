@@ -52,10 +52,8 @@
                         </div>
                     </div>
                 {% else %}
-                    <h2 style='color: #00b533;font-size: 65px;' class="title">Thanks for your purchase!</h2>
-                    <p> The course has been added to your courselist - please check 
-                        <a class='text-decoration-none' href="{% url 'enrolled_courses' %}">Course-List</a>
-                    </p>
+                    <h3>Your cart is empty.</h3>
+                    <a class='text-decoration-none' href="{% url 'all_courses' %}">Keep Shopping</a>
                 {% endif %}
             {% endwith %}
         </div>

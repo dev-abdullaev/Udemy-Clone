@@ -143,7 +143,7 @@
                                             <div class="accordion-body">
                                                 {% for video in section.video.all %}
                                                     {% if is_paid or request.user.is_superuser or request.user.is_teacher and course.teacher.pk == request.user.pk %}
-                                                        <div style='margin-bottom:0px' class="row">
+                                                        <div class="row">
                                                             <div class="col-10">
                                                                 <a class='text-decoration-none' href="{% url 'watch_course' course.slug  %}">
                                                                     <i style='font-size: 20px' class="bi bi-play-circle"></i> 
@@ -153,12 +153,12 @@
                                                             <div class="col-2">
                                                                 <span class='text-primary'>{{video.get_video_length_time}}
                                                                     <i class="bi bi-unlock"></i>
-                                                                </span>
+                                                                </span> 
                                                             </div>
                                                             <hr class='col-12'>
                                                         </div>
                                                     {% else %}
-                                                        <div style='margin-bottom:0px' class="row ">
+                                                        <div class="row ">
                                                             <div class="col-10">
                                                                 <a class='text-decoration-none btn disabled' href="{% url 'watch_course' course.slug  %}">
                                                                     <i style='font-size: 20px' class="bi bi-play-circle"></i> 
@@ -181,7 +181,6 @@
                                 </div>
                             {% endfor %}                           
                         </div>
-
                     </div>
 
                     <div class="row mt-5 mx-1">
