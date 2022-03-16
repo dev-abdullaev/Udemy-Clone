@@ -10,7 +10,7 @@
                 <form action="" method='post'>
                     {% csrf_token %}
                     {{form|crispy}}
-                    <a style='text-decoration:none;' href="{% url 'password_reset' %}">Forget Password?</a>
+                    {% comment %} <a style='text-decoration:none;' href="{% url 'password_reset' %}">Forget Password?</a> {% endcomment %}
                     <div class="text-center d-grid">
                         <button class="btn btn-outline-primary mb-3 mt-4" type='submit'>Submit</button>
                     </div>

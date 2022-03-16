@@ -9,9 +9,7 @@
                 <div class="card mb-4" style="width: 20rem;">
                     <div class="card-body">
                         <iframe width="280" height="200" src="{{course.video_link}}" 
-                            title="YouTube video player" frameborder="0" 
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                            allowfullscreen>
+                            title="YouTube video player" frameborder="0" allowfullscreen rel="0">
                         </iframe> 
                         <hr>
                         {% if course.price == 0 %}
@@ -44,9 +42,13 @@
                                     <button class="btn btn-primary disabled">Superuser Can't Enroll</button>
                                 </div>
                             {% else %}
-                                <div class="d-grid my-2">
-                                    <button class="btn btn-primary"><i class="bi bi-cart-check"></i> Add To Cart</button>
-                                </div>
+                                {% if request.user.is_authenticated %}
+                                    <div class="d-grid my-2">
+                                        <button class="btn btn-primary"><i class="bi bi-cart-check"></i> Add To Cart</button>
+                                    </div>
+                                {% else %}
+                                    <span>Please register to buy a course!</span> 
+                                {% endif %}
                             {% endif %}
                         </form>
                     </div>
@@ -144,13 +146,13 @@
                                                 {% for video in section.video.all %}
                                                     {% if is_paid or request.user.is_superuser or request.user.is_teacher and course.teacher.pk == request.user.pk %}
                                                         <div class="row">
-                                                            <div class="col-10">
+                                                            <div class="col-9">
                                                                 <a class='text-decoration-none' href="{% url 'watch_course' course.slug  %}">
                                                                     <i style='font-size: 20px' class="bi bi-play-circle"></i> 
-                                                                    {{video.name|truncatechars:50}}
+                                                                    {{video.name|truncatechars:40}}
                                                                 </a><br><br>
                                                             </div>
-                                                            <div class="col-2">
+                                                            <div class="col-3">
                                                                 <span class='text-primary'>{{video.get_video_length_time}}
                                                                     <i class="bi bi-unlock"></i>
                                                                 </span> 
@@ -159,13 +161,13 @@
                                                         </div>
                                                     {% else %}
                                                         <div class="row ">
-                                                            <div class="col-10">
+                                                            <div class="col-9">
                                                                 <a class='text-decoration-none btn disabled' href="{% url 'watch_course' course.slug  %}">
                                                                     <i style='font-size: 20px' class="bi bi-play-circle"></i> 
-                                                                    {{video.name|truncatechars:50}}
+                                                                    {{video.name|truncatechars:40}}
                                                                 </a>
                                                             </div>
-                                                            <div class="col-2">
+                                                            <div class="col-3">
                                                                 <span class="btn disabled">{{video.get_video_length_time}}
                                                                     <i class="bi bi-lock"></i>
                                                                 </span>
@@ -188,12 +190,19 @@
                         <h3>About The Instructor</h3>
                         <div class="card">
                             <div class="card-body">
-                                <a>
-                                    <i style='font-size: 30px' class="bi bi-person-circle mt-4"></i>
-                                </a>
-                                <a class='text-decoration-none'>
-                                    <b>{{course.teacher.full_name}}</b>
-                                </a>
+                                {% if course.teacher.pk == request.user.pk %}
+                                    <a class='text-decoration-none' href="{% url 'profile' %}">
+                                        <img style='width:40px; height:40px; border-radius:50%' 
+                                            src="{{course.teacher.profile_pic.url}}" alt="">   
+                                        <b>{{course.teacher.full_name}} </b>
+                                    </a>
+                                {% else %}
+                                    <a class='text-decoration-none'>
+                                        <img style='width:40px; height:40px; border-radius:50%' 
+                                            src="{{course.teacher.profile_pic.url}}" alt="">   
+                                        <b>{{course.teacher.full_name}} </b>
+                                    </a>
+                                {% endif %}
                                 <hr>
                             </div>
                             <div class="row">
@@ -231,7 +240,11 @@
                             <form method="post" action="{% url 'reviews' course.slug %}">
                                 {% csrf_token %}
                                 {{form|crispy}}
-                                <button class="btn btn-primary">Add review</button>
+                                {% if request.user.is_authenticated %}
+                                    <button class="btn btn-primary">Add review</button>
+                                {% else %}
+                                    <p>Please signup to add reviews!</p>
+                                {% endif %}
                             </form>
                 
                         </div>

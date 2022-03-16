@@ -61,21 +61,18 @@
             {% endfor %}     
         </div>
         <div class="col-7 my-3 p-4">
-            <iframe name="myIframe" width="740" height="350" frameborder="0" 
-                allow="accelerometer; autoplay; clipboard-write; 
-                encrypted-media; gyroscope; picture-in-picture" allowfullscreen
+            <iframe name="myIframe" width="740" height="350" frameborder="0" rel="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen
                 {% for section in course.section.all %}
                     {% for video in section.video.all %}
-                        src="{{video.link}}"
+                        src="{{video.link}}?autoplay=0&fs=1&iv_load_policy=3&showinfo=0&rel=0&cc_load_policy=0&start=0&end=0"
                     {% endfor %}
                 {% endfor %}>
             </iframe> 
         </div>
     </div>
 
-<script>
- 
-</script>
+
 
 
 {% endblock content %}
