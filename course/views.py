@@ -1,3 +1,4 @@
+from urllib import request
 from django.db.models import Count
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
@@ -18,7 +19,7 @@ def index(request):
     return render(request, 'index.html')
 
 
-class CourseListView(LoginRequiredMixin, ListView):
+class CourseListView(ListView):
     model = Course
     template_name = "course/all_courses.html"
     context_object_name = 'courses'
@@ -35,7 +36,7 @@ class CourseListView(LoginRequiredMixin, ListView):
         return context
 
 
-class CourseDetailView(LoginRequiredMixin, DetailView):
+class CourseDetailView(DetailView):
     model = Course
     template_name = "course/course_detail.html"
     form_class = CourseReviewForm
@@ -62,7 +63,7 @@ class CourseDetailView(LoginRequiredMixin, DetailView):
         context['teacher_courses'] = Course.objects.filter(teacher__pk=self.request.user.pk).count()
         context['student_for_every_course'] = Enroll.objects.filter(course__slug=self.kwargs["slug"]).count()
         context['form'] = CourseReviewForm()
-
+        context['teacher'] = Course.objects.filter(teacher__pk=self.request.user.pk)
         
         if self.request.user.is_authenticated:
             if Enroll.objects.filter(course=course, student=self.request.user).exists():
