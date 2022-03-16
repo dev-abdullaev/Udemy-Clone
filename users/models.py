@@ -11,11 +11,14 @@ class CustomUser(AbstractUser):
     is_student = models.BooleanField(default=False)
     
     
-
+    
 
 class Teacher(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, primary_key=True)
+    profile_picture = models.ImageField(default="user_default.png", upload_to='users/')
 
+
+    
     USERNAME_FIELD = 'username'
 
     
@@ -27,6 +30,9 @@ class Teacher(models.Model):
 
     def full_name(self):
         return f'{self.user.first_name} {self.user.last_name}'
+
+    def profile_pic(self):
+        return self.user.profile_picture
 
 
 
