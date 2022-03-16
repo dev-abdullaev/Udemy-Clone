@@ -55,26 +55,30 @@
                                 <table class='table table-bordered'>
                                     <thead>
                                         <tr>
-                                            <th scope="col">Course Name</th>
                                             <th scope="col">Teacher Name</th>
+                                            <th scope="col">Course Name</th>
+                                            <th scope="col">Students In Each Course</th>
                                             
                                         </tr>
                                     </thead>
                                     {% for teacher in teachers %}
                                         <tbody>
                                             <td>
-                                                {% for course in teacher.course_set.all %}
-                                                    
-                                                <span>{{forloop.counter}} - </span>
-                                                <a class='text-decoration-none' 
-                                                    href="{% url 'course_detail' course.slug %}">{{course.name}} <br>
-                                                </a>
-                                                {% endfor %}
-                                            </td>
-                                            <td>
                                                 {{teacher}}
                                             </td>
-                                            
+                                            <td>
+                                                {% for course in teacher.course_set.all %}
+                                                    <span>#{{forloop.counter}} - </span>
+                                                    <a class='text-decoration-none' 
+                                                        href="{% url 'course_detail' course.slug %}">{{course.name}} <br><br>
+                                                    </a>
+                                                {% endfor %}
+                                            </td>                                            
+                                            <td>
+                                                {% for course in teacher.course_set.all %}       
+                                                    <span >{{course.enroll_set.count}}</span><br><br>
+                                                {% endfor %}
+                                            </td>
                                         </tbody>
                                     {% endfor %}
                                     <h5>Total Students: {{students}}</h5>
