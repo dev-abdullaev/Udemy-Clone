@@ -144,6 +144,7 @@ def approve_teacher(request, pk):
     
     return redirect('unapproved_teachers')
 
+
 def reject_teacher(request, pk):
     teacher = CustomUser.objects.get(id=pk)
     teacher.delete()
