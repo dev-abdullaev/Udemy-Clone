@@ -16,4 +16,5 @@ urlpatterns = [
     path('admin-dashboard/', views.admin_dashboard, name='admin_dashboard'),
     path('unapproved-teachers/', views.UnapprovedUserListView, name='unapproved_teachers'),
     path('approve-teacher/<int:pk>/', views.approve_teacher, name='approve_teacher'),
+    path('reject-teacher/<int:pk>/', views.reject_teacher, name='reject_teacher'),
 ]
