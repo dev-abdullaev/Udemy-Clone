@@ -33,8 +33,8 @@ go to the link http://127.0.0.1:8000 and Boooom welcome to fully functional Udem
 
  
 ## Roles
-  <b>Student</b>
-  <b>Teacher</b>
+  <b>Student</b> <br>
+  <b>Teacher</b> <br>
   <b>Superuser</b>
 
 ## Contributing
