@@ -21,6 +21,7 @@
                             <td>{{teacher.last_name}}</td>
                             <td>
                                 <a href="{% url 'approve_teacher' teacher.pk %}" class='btn btn-sm btn-info'>Approve</a>
+                                <a href="{% url 'reject_teacher' teacher.pk %}" class='btn btn-sm btn-danger'>Reject</a>
                             </td>
                         </tr>
                         </tbody>
