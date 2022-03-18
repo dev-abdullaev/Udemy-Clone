@@ -2,8 +2,20 @@
 
 
 {% block content %}
+
+    <style>
+        a.disabled {
+            color: gray;
+            pointer-events: none;
+        }
+        span.disabled{
+            color: gray;
+            pointer-events: none;
+        }   
+    </style>
+
     <div class="row">
-        <div class="col-5">
+        <div class="col-12 col-md-5 col-lg-5">
             <h5 class="text-center"><i style='font-size: 25px' class="bi bi-book"></i> The list of lessons</h5>
             {% for section in course.section.all %}
                 <div class="accordion" id="accordionExample">
@@ -21,36 +33,36 @@
                                 {% for video in section.video.all %}
                                     {% if is_paid or request.user.is_superuser or request.user.is_teacher %}
                                     <div class="row">
-                                        <div style='margin-bottom:7px' class="col-9">
+                                        <div style='margin-bottom:7px' class="col-8 col-md-8 col-lg-10">
                                             <a target='myIframe' class='text-decoration-none' href="{{video.link}}">
                                                 <i style='font-size: 20px' class="bi bi-play-circle"></i> 
                                                 {{video.name|truncatechars:40}}
                                                 
                                             </a>
                                         </div>
-                                        <div class="col-3">
+                                        <div class="col-4 col-md-4 col-lg-2">
                                             <span class="text-primary">{{video.get_video_length_time}}
                                                 <i class="bi bi-unlock"></i>
                                             </span>
                                         </div>
                                         
-                                        <hr class='col-12'>
+                                        <hr>
                                     </div>
                                     {% else %}
                                         <div class="row">
-                                            <div style='margin-bottom:7px' class="col-9">
-                                                <a class='text-decoration-none btn disabled' href="{{video.link}}">
+                                            <div style='margin-bottom:7px' class="col-8 col-md-8 col-lg-10">
+                                                <a class='text-decoration-none disabled' href="{{video.link}}">
                                                     <i style='font-size: 20px' class="bi bi-play-circle"></i> 
                                                     {{video.name|truncatechars:40}}
                                                     
                                                 </a>
                                             </div>
-                                            <div class="col-3">
-                                                <span class="btn disabled">{{video.get_video_length_time}}
+                                            <div class="col-4 col-md-4 col-lg-2">
+                                                <span class="disabled">{{video.get_video_length_time}}
                                                     <i class="bi bi-lock"></i>
                                                 </span>
                                             </div>
-                                            <hr class='col-12'>
+                                            <hr>
                                         </div>
                                     {% endif %}
                                 {% endfor %}
@@ -60,8 +72,8 @@
                 </div>
             {% endfor %}     
         </div>
-        <div class="col-7 my-3 p-4">
-            <iframe name="myIframe" width="740" height="350" frameborder="0" rel="0"
+        <div class="col-12 col-md-7 col-lg-7 my-3 p-4">
+            <iframe name="myIframe" width="100%" height="350" frameborder="0" rel="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen
                 {% for section in course.section.all %}
                     {% for video in section.video.all %}

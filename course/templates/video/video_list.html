@@ -5,9 +5,21 @@
 
 {% block content %}
 
+    <style>
+        @media screen and (max-width: 1200px) {
+            .bi-pencil-square{
+                display: none
+            }
+            .bi-trash{
+                display: none
+            }
+            
+        }
+    </style>
+
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-8">
+            <div class="col-12 col-md-10 col-lg-8">
                 <h1 class='text-center'>All Videos</h1><br>
                     <table class='table table-bordered'>
                         <thead>
@@ -20,7 +32,7 @@
                         {% for video in videos %}
                             <tbody>
                                 <tr>
-                                    <td>{{video.name}}</td>
+                                    <td>{{video.name|truncatechars:40}}</td>
                                     <td>
                                         <a class='text-decoration-none mx-2 btn-sm btn btn-warning' 
                                             href="{% url 'update_video' video.pk %}">

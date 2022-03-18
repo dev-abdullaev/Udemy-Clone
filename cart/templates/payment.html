@@ -48,6 +48,33 @@
   
   .field::-webkit-input-placeholder { color: #CFD7E0; }
   .field::-moz-placeholder { color: #CFD7E0; }
+
+  @media screen and (max-width: 1000px) {
+    .payment-text{
+      font-size: 20px;
+    }
+    .btn-primary{
+        width: 100%;
+    }
+  }
+
+  @media screen and (max-width: 810px) {
+    .payment-text{
+      font-size: 18px;
+    }
+    .btn-primary{
+        width: 100%;
+    }
+  }
+
+  @media screen and (max-width: 580px) {
+    .payment-text{
+      font-size: 15px;
+    }
+    .btn-primary{
+        width: 100%;
+    }
+  }
   
 </style>
 
@@ -57,7 +84,7 @@
         <div class="order-details" style="width: 50%;margin: auto;">
             <center><h3 class="title mt-3">Payment Details</h3></center> <br>
             {% if cart.get_total_price != 0 %}
-              <div class="col-lg-10 col-md-10 col-sm-12">
+              <div class="col-12 col-md-12 col-lg-12">
                   
                     <div class="group">
                         <label>
@@ -66,7 +93,7 @@
                         </label>
                     </div>
               </div>
-              <div class="payment-box col-lg-10 col-md-10 col-sm-12">
+              <div class="payment-box col-12 col-md-12 col-lg-12">
                   <div class="text-center d-grid">
                       <a id="pay-now" href='{% url 'cart_checkout' %}' class="btn btn-primary" onclick="cardcreate()">Submit</a>
                   </div>
@@ -75,8 +102,8 @@
                   </div>
               </div>
             {% else %}
-              <div class="payment-box col-lg-10 col-md-10 col-sm-12">
-                <h4>Just proceed with a sumbit button <br>We won't charge you for FREE Course.</h4>
+              <div class="payment-box col-12 col-md-12 col-lg-12">
+                <h4 class='payment-text'>Just proceed with a sumbit button <br>We won't charge you for FREE Course.</h4>
                 <div class="text-center d-grid">
                     <a id="pay-now" href='{% url 'cart_checkout' %}' class="btn btn-primary" onclick="cardcreate()">Submit</a>
                 </div>

@@ -3,12 +3,24 @@
 {% load static %}
 
 {% block content %}
+
+    <style>
+        a.disabled {
+            color: gray;
+            pointer-events: none;
+            }
+        span.disabled{
+            color: gray;
+            pointer-events: none;
+        }
+    </style>
+
     <div class="container">
         <div class="row">
-            <div class="col-4">
-                <div class="card mb-4" style="width: 20rem;">
+            <div class="col-12 col-md-5 col-lg-4">
+                <div class="card mb-4" style="width: 100%;">
                     <div class="card-body">
-                        <iframe width="280" height="200" src="{{course.video_link}}" 
+                        <iframe width="100%" height="200" src="{{course.video_link}}" 
                             title="YouTube video player" frameborder="0" allowfullscreen rel="0">
                         </iframe> 
                         <hr>
@@ -62,7 +74,7 @@
                     <p><i style='font-size:20px ' class="bi bi-check text-primary"></i>{{course.to_whom}}</p>
                 </div>
             </div>
-            <div class="col-8">
+            <div class="col-12 col-md-7 col-lg-8">
                 <h6>
                     <span class="text-muted">Overall Rating:</span> {{course.get_rating|floatformat:1}}
                     <span>
@@ -78,34 +90,34 @@
 
                 <div class="course-detail">
                     <div class="row">
-                        <div class="col-4">
+                        <div class="col-12 col-md-10 col-lg-4">
                             <span class="text-muted">Teacher: </span> <b>{{course.teacher}}</b>
                         </div>
-                        <div class="col-4 mb-2">
+                        <div class="col-6 col-md-6 col-lg-4 mb-2">
                             <span class="text-muted">Difficulty:</span> <b>{{course.difficulty}}</b>
                         </div>
-                        <div class="col-4 mb-2">
+                        <div class="col-6 col-md-6 col-lg-4 mb-2">
                             <span class="text-muted">Share:</span>
                             <a href=""><i style='font-size:20px' class="bi bi-facebook mr-1"></i></a> 
                             <a href=""><i style='font-size:20px' class="bi bi-twitter mr-1"></i></a>
                             <a href=""><i style='font-size:20px' class="bi bi-linkedin mr-1"></i></a>
                             <a href=""><i style='font-size:20px' class="bi bi-telegram mr-1"></i></a>
                         </div>
-                        <hr style='width: 900px'>
+                        <hr style='width: 100%'>
                     </div>
                         
                     <div class="row mt-4">
-                        <div class="col-3">
+                        <div class="col-6 col-md-6 col-lg-3 ">
                             <span class="text-muted">Category:</span><br> {{course.category.title}}
                         </div>
-                        <div class="col-3">
+                        <div class="col-6 col-md-6 col-lg-3">
                             <span class="text-muted">Duration:</span><br> {{course.total_course_length}}
                         </div>
-                        <div class="col-3">
+                        <div class="col-12 col-md-6 col-lg-3">
                             <span class="text-muted">Number of Students: <br>
                             <span class=text-dark>{{student_for_every_course}}</span></b>
                         </div>
-                        <div class="col-3 mb-2">
+                        <div class="col-12 col-md-6 col-lg-3">
                             <span class="text-muted">Last Update: </span><br> {{course.updated|date}}
                         </div>
                         <hr style='width: 900px'>
@@ -118,13 +130,13 @@
                     </div>
 
                     <div class="row mt-5">
-                        <div class="col-5">
+                        <div class="col-8 col-md-6">
                             <h3>Course content</h3>
                         </div>
-                        <div class="col-4 mt-2">
+                        <div class="col-6 col-md-3 mt-2">
                             <span class="text-muted">Lectures</span> <strong>{{course.get_total_lectures}}</strong>
                         </div>
-                        <div class="col-3 mt-2">
+                        <div class="col-6 col-md-3 mt-2">
                             <span class="text-muted">Duration</span> <strong>{{course.total_course_length}}</strong>
                         </div>
                     
@@ -146,33 +158,33 @@
                                                 {% for video in section.video.all %}
                                                     {% if is_paid or request.user.is_superuser or request.user.is_teacher and course.teacher.pk == request.user.pk %}
                                                         <div class="row">
-                                                            <div class="col-9">
+                                                            <div class="col-8 col-md-9 col-lg-10">
                                                                 <a class='text-decoration-none' href="{% url 'watch_course' course.slug  %}">
                                                                     <i style='font-size: 20px' class="bi bi-play-circle"></i> 
                                                                     {{video.name|truncatechars:40}}
                                                                 </a><br><br>
                                                             </div>
-                                                            <div class="col-3">
+                                                            <div class="col-4 col-md-3 col-lg-2">
                                                                 <span class='text-primary'>{{video.get_video_length_time}}
                                                                     <i class="bi bi-unlock"></i>
                                                                 </span> 
                                                             </div>
-                                                            <hr class='col-12'>
+                                                            <hr>
                                                         </div>
                                                     {% else %}
                                                         <div class="row ">
-                                                            <div class="col-9">
-                                                                <a class='text-decoration-none btn disabled' href="{% url 'watch_course' course.slug  %}">
-                                                                    <i style='font-size: 20px' class="bi bi-play-circle"></i> 
+                                                            <div class="col-8 col-md-9 col-lg-10">
+                                                                <a class='text-decoration-none disabled' href="{% url 'watch_course' course.slug  %}">
+                                                                    <i style='font-size: 20px;' class="bi bi-play-circle"></i> 
                                                                     {{video.name|truncatechars:40}}
-                                                                </a>
+                                                                </a><br><br>
                                                             </div>
-                                                            <div class="col-3">
-                                                                <span class="btn disabled">{{video.get_video_length_time}}
+                                                            <div class="col-4 col-md-3 col-lg-2">
+                                                                <span class='disabled'>{{video.get_video_length_time}}
                                                                     <i class="bi bi-lock"></i>
-                                                                </span>
+                                                                </span> 
                                                             </div>
-                                                            <hr class='col-12'>
+                                                            <hr>
                                                         </div>
                                                     {% endif %}
                                                 {% endfor %}
@@ -206,13 +218,13 @@
                                 <hr>
                             </div>
                             <div class="row">
-                                <div class="col-6">
+                                <div class="col-12 col-md-8 col-lg-6">
                                     <span style='margin-left: 15px' class="text-muted ml-4"> Ratings:</span> 
                                     {{course.get_rating|floatformat:1}}
                                     ({{course.get_number_of_rating}} ratings)
                                 </div>
                                 {% if request.user.is_superuser or request.user.is_teacher %}
-                                    <div class="col-3">
+                                    <div class="col-6 col-md-4 col-lg-3">
                                         <i style='font-size: 30px' class="bi bi-mortarboard"></i>
 
                                         {% if teacher_courses <= 1 %}
@@ -223,7 +235,7 @@
                                         
                                     </div>
                                 {% endif %}
-                                <div class="col-3">
+                                <div class="col-6 col-md-6 col-lg-3">
                                     <i style='font-size: 30px' class="bi bi-person"></i>
                                     {% if student_for_every_course <= 1 %}
                                         {{ student_for_every_course }} student
@@ -256,10 +268,10 @@
 
                             {% for review in course.coursereview_set.all %}
                                 <div class="row mb-3">
-                                    <div class="col-1 me-2">
+                                    <div class="col-4 col-md-4 col-lg-1 me-2">
                                         <img style='width:60px; height: 60px; border-radius: 50%' class="small-profile-pic" src="{{ review.user.profile_picture.url }}">
                                     </div>
-                                    <div class="col-7">
+                                    <div class="col-12 col-md-12 col-lg-7">
                                         <b>{{ review.user.username }}</b> rated it {{ review.stars_given }} stars  <span class="fw-lighter">{{ review.created_at }}</span>
                                         {% if review.user == request.user %}
                                             <a href="{% url 'edit_course_review' course.slug review.id %}"><i class="bi bi-pen"></i></a>

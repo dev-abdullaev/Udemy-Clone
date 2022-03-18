@@ -3,14 +3,25 @@
 
 {% block content %}
 
+    <style>
+        .left-line{
+            border-right: 1px solid black;
+            margin-top: -17px;
+        }
+        @media screen and (max-width: 750px) {
+            .left-line {
+                border-right: none;
+            }
+        }
+    </style>
 
     <div class="container">
         <div class="row">
             <div class="row mb-2">
-                <div class="col-2">
+                <div class="col-7 col-md-3 col-lg-2">
                     <img style='border-radius: 50%;width: 150px; height: 150px; ' src="{{request.user.profile_picture.url}}" alt="">
                 </div>
-                <div class="col-8" style='margin-left:-20px'>
+                <div class="col-5 col-md-6 col-lg-10" style='margin-left:-20px'>
                     <h1 class='my-5'>{{request.user.first_name}} {{request.user.last_name}}</h1>
                 </div>
                 
@@ -18,23 +29,23 @@
             <hr>
         
             <div class="row" >
-                <div class="col-3" style="border-right: 1px solid ; margin-top: -17px" >
+                <div class="col-12 col-md-3 col-lg-2" >
                     <div class="d-flex flex-column flex-shrink-0 p-2 text-white bg-white" >
 
                         <ul class="nav nav-pills flex-column mb-auto">
                             <li>
                                 <a class="nav-link" href="{% url 'admin_dashboard' %}">
-                                    <i style='font-size: 20px' class="bi bi-speedometer2"></i>&nbsp;&nbsp; Dashboard
+                                    <i style='font-size: 18px' class="bi bi-speedometer2"></i> Dashboard
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a href="{% url 'profile' %}" class="nav-link" >
-                                    <i style='font-size: 20px' class="bi bi-person"></i>&nbsp;&nbsp; My Profile
+                                    <i style='font-size: 20px' class="bi bi-person"></i> Profile
                                 </a>
                             </li>
                             <li>
                                 <a href="{% url 'logout' %}" class="nav-link">
-                                    <i style='font-size: 20px' class="bi bi-box-arrow-in-right"></i>&nbsp;&nbsp; Logout
+                                    <i style='font-size: 20px' class="bi bi-box-arrow-in-right"></i> Logout
                                 </a>
                             </li>
                         </ul>
@@ -42,47 +53,50 @@
                     </div>
                 </div>
 
-                <div class="col-9">
+                <div class="col-8 col-md-9 col-lg-9 ">
                     <div class="row mx-4 justify-content-center">
                         <div class="col">
                             <h1 class='text-center' >Dashboard</h1>
                         </div>
                         <div class="row">
-                            <div class="col my-2">
+                            <div class="col-12 col-md-12 col-lg-12 my-2">
                                 {% for enroll in enrolls %}
                                     <span>{{enrroll.student.first_name}}</span>
                                 {% endfor %}
-                                <table class='table table-bordered'>
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Teacher Name</th>
-                                            <th scope="col">Course Name</th>
-                                            <th scope="col">Students In Each Course</th>
-                                            
-                                        </tr>
-                                    </thead>
-                                    {% for teacher in teachers %}
-                                        <tbody>
-                                            <td>
-                                                {{teacher}}
-                                            </td>
-                                            <td>
-                                                {% for course in teacher.course_set.all %}
-                                                    <span>#{{forloop.counter}} - </span>
-                                                    <a class='text-decoration-none' 
-                                                        href="{% url 'course_detail' course.slug %}">{{course.name}} <br><br>
-                                                    </a>
-                                                {% endfor %}
-                                            </td>                                            
-                                            <td>
-                                                {% for course in teacher.course_set.all %}       
-                                                    <span >{{course.enroll_set.count}}</span><br><br>
-                                                {% endfor %}
-                                            </td>
-                                        </tbody>
-                                    {% endfor %}
-                                    <h5>Total Students: {{students}}</h5>
-                                </table> 
+                                
+                                    <table class='table table-bordered '>
+                                        <thead>
+                                            <tr>
+                                                <th>Teacher Name</th>
+                                                <th>Course Name</th>
+                                                <th>Students In Each Course</th>
+                                                
+                                            </tr>
+                                        </thead>
+                                        {% for teacher in teachers %}
+                                            <tbody>
+                                                <td class="col-2 col-md-2 col-lg-3">
+                                                    {{teacher}}
+                                                </td>
+                                                <td class="col-8 col-md-7 col-lg-6">
+                                                    {% for course in teacher.course_set.all %}
+                                                        <span>#{{forloop.counter}} - </span>
+                                                        <a class='text-decoration-none' 
+                                                            href="{% url 'course_detail' course.slug %}">{{course.name}} <br><br>
+                                                        </a>
+                                                    {% endfor %}
+                                                </td>                                            
+                                                <td class="col-2 col-md-2 col-lg-3">
+                                                    {% for course in teacher.course_set.all %}       
+                                                        <span >{{course.enroll_set.count}}</span><br><br>
+                                                    {% endfor %}
+                                                </td>
+                                            </tbody>
+                                        {% endfor %}
+                                        
+                                        <h5><caption>Total Students: {{students}}</caption></h5>
+                                    </table> 
+                                
                             </div>
                         </div>
                     </div>

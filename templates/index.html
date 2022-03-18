@@ -4,26 +4,50 @@
 
 
 {% block content %}
+
+    <style>
+        .home-text{
+            color: #00b533;
+            font-size: 65px;
+        }
+        .middle-border{
+            border-right: 1px solid green;
+            height: 200px;
+        }
+        @media screen and (max-width: 1000px) {
+            .home-text{
+                font-size: 50px;
+            }
+            
+        }
+        @media screen and (max-width: 700px) {
+            .home-text{
+                font-size: 30px;
+            }
+            
+        }
+        
+    </style>
     
     <div class="container-fluid">
         <div class="container">
         <div class="row">
-            <div class="col-lg-7">
-                <h1 style='color: #00b533;font-size: 65px;' class='mt-5 home-text'>Learn Coding With Us In A Comfortable Environment</h1>
+            <div class="col-12 col-md-6 col-lg-7">
+                <h1 class='mt-5 home-text'>Learn Coding With Us In A Comfortable Environment</h1>
             </div>
-            <div class="col-5 mb-4">
-                <img class='mt-5' src="{% static 'photos/h1.svg' %}" alt="">
+            <div class="col-12 col-md-6 col-lg-5 mb-4">
+                <img style='width:100%' class='mt-5' src="{% static 'photos/h1.svg' %}" alt="">
             </div>
         <div>
         <div style='background-color: #f8f8f8;' class="row mb-4">
-            <div class="col-lg-6" style='border-right: 1px solid green; height: 200px'>
+            <div class="col-12 col-md-12 col-lg-6 middle-border">
                 <i style='font-size:40px' class="bi bi-building ml-5"></i>
                 <span style='font-size:40px'> Onsite</span> 
                 <p class='ml-5 mt-3'>
                     In this form of education, you can study in one of our branches
                 </p>
             </div>
-            <div class="col-lg-6">
+            <div class="col-12 col-md-12 col-lg-6">
                 <i style='font-size:40px' class="bi bi-house ml-5"></i><span style='font-size:40px'> Home</span>
                 <p class='ml-5 mt-3'>
                     In this form of education, you can study remotely without being interrupted to your work
@@ -31,10 +55,10 @@
             </div>
         </div>
         <div  class="row course-section">
-            <div class="col-4">
-                <img src="{% static 'photos/p1.svg' %}" alt="">
+            <div class="col-12 col-md-12 col-lg-4">
+                <img style='width:100%' src="{% static 'photos/p1.svg' %}" alt="">
             </div>
-            <div style='' class="col-8">
+            <div class="col-12 col-md-12 col-lg-8">
                 <h2 class='my-5 mx-5'> Choose A Direction That Suits You</h2>
                 <p class='mb-5 mx-5'>
                     Choose one of the most advanced and in-demand courses in programming. <br>

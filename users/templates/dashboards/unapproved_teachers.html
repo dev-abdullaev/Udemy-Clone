@@ -4,7 +4,7 @@
 
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-8">
+            <div class="col-6">
                 <h2 class='text-center'>Unapproved Teachers' List</h2>
                 <table class="table table-bordered">
                     <thead>
@@ -14,7 +14,7 @@
                         <th>Action</th>
                       </tr>
                     </thead>
-                    {% for teacher in teachers %}
+                    {% for teacher in unapproved_teachers %}
                         <tbody>
                         <tr>
                             <td>{{teacher.first_name}}</td>
@@ -28,6 +28,31 @@
                     {% endfor %}
                   </table>
             </div>
+            <div class="col-6">
+                <h2 class='text-center'>Approved Teachers' List</h2>
+                <table class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th scope="col">First Name</th>
+                        <th scope="col">Last Name</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    {% for teacher in approved_teachers %}
+                        <tbody>
+                        <tr>
+                            <td>{{teacher.first_name}}</td>
+                            <td>{{teacher.last_name}}</td>
+                            <td>
+                                
+                                <a href="{% url 'reject_teacher' teacher.pk %}" class='btn btn-sm btn-danger'>Reject</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    {% endfor %}
+                  </table>
+            </div>
+
         </div>
     </div>
 

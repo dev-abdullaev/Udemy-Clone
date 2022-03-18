@@ -4,12 +4,52 @@
 
 {% block content %}
 
+    <style>
+        @media screen and (max-width: 1400px) {
+            .course-img{
+               width: 20%;
+               height: 50px;
+            }
+            .cart-course-wrapper{
+                margin-bottom: 10px;
+            }
+            .checkout-btn{
+                margin-bottom: 10px;
+            }
+        }
+        @media screen and (max-width: 810px) {
+            .course-img{
+               width: 100%;
+               height: 170px;
+            }
+            .cart-course-wrapper{
+                margin-bottom: 10px;
+            }
+            .checkout-btn{
+                margin-bottom: 10px;
+            }
+        }
+        @media screen and (max-width: 770px) {
+            .course-img{
+               width: 100%;
+               height: 120px;
+            }
+            .cart-course-wrapper{
+                margin-bottom: 10px;
+            }
+            .checkout-btn{
+                margin-bottom: 10px;
+            }
+        }
+        
+    </style>
+
     <section class="cart-list-area">
         <div class="container">
             {% with total_items=cart|length %}
                 {% if cart|length > 0 %}
                     <div class="row" id="cart_items_details">
-                        <div class="col-lg-9">
+                        <div class="col-12 col-md-8 col-lg-9">
 
                             <div class="in-cart-box">
                                 <div class="title">{{ total_items }} courses in cart</div>
@@ -22,8 +62,8 @@
                                                         <div class="card">
                                                             
                                                             <div class="card-body">
-                                                              <img style='width:100px; height:70px' src="{{course.image.url}}" alt="">
-                                                              <span class="card-text px-3 fw-bold">{{course.name}}</span>
+                                                              <img class='course-img' src="{{course.image.url}}" alt="">
+                                                              <span class="card-text px-2 fw-bold">{{course.name}}</span>
                                                               <b>${{ course.price | floatformat:2  }}</b> 
                                                               <form action="{% url 'cart_remove' course.slug %}" method="post"><br>
                                                                     {% csrf_token %}
@@ -42,7 +82,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-3">
+                        <div class="col-12 col-md-4 col-lg-3">
                             <div class="cart-sidebar">
                                 <h4 class="total">Total:
                                     $<b id="total_price_of_checking_out">{{ cart.get_total_price | floatformat:2 }}</b>
