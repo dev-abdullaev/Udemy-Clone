@@ -1,15 +1,12 @@
-from multiprocessing import context
-from urllib import request
 from django.urls import reverse_lazy
-from django.contrib.auth import login
 from django.shortcuts import render, redirect
-from django.views.generic import CreateView, View, ListView
+from django.views.generic import CreateView, View
 from .forms import CustomUserCreationForm, UserUpdateForm, TeacherForm, TeacherUpdateForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import CustomUser, Teacher
-from django.db.models import Count, Sum
+from django.db.models import Count
 from course.models import Course, Enroll
 
 
@@ -33,13 +30,11 @@ def student_dashboard(request):
 def teacher_dashboard(request):
     teacher_course_count = Course.objects.filter(teacher__pk=request.user.pk).count()
     teacher_courses = Course.objects.filter(teacher__pk=request.user.pk)
-    
-   
 
 
     context = {
         'teacher_course_count': teacher_course_count,
-        'teacher_courses':teacher_courses,
+        'teacher_courses': teacher_courses
     }
 
     return render(request, 'dashboards/teacher_dashboard.html', context)
@@ -128,7 +123,7 @@ class TeacherProfileUpdateView(LoginRequiredMixin, View):
 
 @login_required
 def UnapprovedUserListView(request):
-    teachers = CustomUser.objects.all().filter(is_active=False, is_teacher=False)
+    teachers = CustomUser.objects.filter(is_active=False, is_teacher=False)
 
 
     context = {'teachers': teachers}

@@ -20,7 +20,7 @@ admin.site.register(CustomUser, CustomUserAdmin)
 class TeacherAdmin(admin.ModelAdmin):
     add_form = TeacherForm
     model = Teacher
-    list_display = ["full_name", 'username', 'email', 'is_active', 'is_teacher' ]
+    list_display = ["full_name", 'username', 'id', 'email', 'is_active', 'is_teacher' ]
 
     def full_name(self, obj):
         return f'{obj.user.first_name} {obj.user.last_name}'
@@ -36,6 +36,9 @@ class TeacherAdmin(admin.ModelAdmin):
 
     def username(self, obj):
         return f'{obj.user.username}'
+    
+    def id(self, obj):
+        return f'{obj.user.id}'
 
 
 admin.site.register(Teacher, TeacherAdmin)
