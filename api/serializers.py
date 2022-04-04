@@ -1,6 +1,4 @@
 from rest_framework import serializers
-from django import forms
-
 from users.models import Teacher, CustomUser
 from course.models import Course, Section, Video, Category, CourseReview, Enroll
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -253,15 +251,10 @@ class TeacherApproveSerializer(serializers.ModelSerializer):
         fields = ['teacher']
 
 
-
-
-
-
-
-
-
-
-
+class ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ['pk', 'first_name', 'last_name', 'username', 'email', 'profile_picture']
 
 
 
