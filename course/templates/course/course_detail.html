@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+
 {% load crispy_forms_tags %}
 {% load static %}
 
@@ -20,8 +21,9 @@
             <div class="col-12 col-md-5 col-lg-4">
                 <div class="card mb-4" style="width: 100%;">
                     <div class="card-body">
-                        <iframe width="100%" height="200" src="{{course.video_link}}" 
-                            title="YouTube video player" frameborder="0" allowfullscreen rel="0">
+                        <iframe width="100%" height="400" frameborder="0" rel="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen
+                            src="{{course.video_link}}?autoplay=0&fs=1&iv_load_policy=3&showinfo=0&rel=0&cc_load_policy=0&start=0&end=0">
                         </iframe> 
                         <hr>
                         {% if course.price == 0 %}
@@ -36,7 +38,7 @@
                             Video, Quiz, PDF and Posts
                         </strong>
                        
-                        <form class="form-inline" method='post' action='{% url 'cart_add' course.slug %}'>{% csrf_token %}
+                        <form class="form-inline" method='post' action='{% url "cart_add" course.slug %}'>{% csrf_token %}
                             {% csrf_token %}
                             <input type="hidden" value="" name="course_id">
                             <input type="hidden" value="" name="name">
@@ -125,7 +127,7 @@
 
                     <div class="row">
                         <h3>What will you learn during the course?</h3>
-                        <p><i style='font-size:30px' class="bi bi-check text-primary"></i> Basics of Python</p>
+                        <p><i style='font-size:30px' class="bi bi-check text-primary"></i>{{course.learning_goal}}</p>
                         </div>
                     </div>
 
@@ -271,7 +273,7 @@
                                     <div class="col-4 col-md-4 col-lg-1 me-2">
                                         <img style='width:60px; height: 60px; border-radius: 50%' class="small-profile-pic" src="{{ review.user.profile_picture.url }}">
                                     </div>
-                                    <div class="col-12 col-md-12 col-lg-7">
+                                    <div class="col-12 col-md-12 col-lg-8">
                                         <b>{{ review.user.username }}</b> rated it {{ review.stars_given }} stars  <span class="fw-lighter">{{ review.created_at }}</span>
                                         {% if review.user == request.user %}
                                             <a href="{% url 'edit_course_review' course.slug review.id %}"><i class="bi bi-pen"></i></a>

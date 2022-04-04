@@ -61,17 +61,15 @@
                                                     <div class="cart-course-wrapper">
                                                         <div class="card">
                                                             
-                                                            <div class="card-body">
-                                                              <img class='course-img' src="{{course.image.url}}" alt="">
-                                                              <span class="card-text px-2 fw-bold">{{course.name}}</span>
-                                                              <b>${{ course.price | floatformat:2  }}</b> 
-                                                              <form action="{% url 'cart_remove' course.slug %}" method="post"><br>
+                                                            <div class="card-body d-flex">
+                                                                <img style='height: 80px' class='course-img' src="{{course.image.url}}" alt="">
+                                                                <form action="{% url 'cart_remove' course.slug %}" method="post"><br>
+                                                                    <span class="card-text px-2 fw-bold">{{course.name}}</span> 
+                                                                    <b>${{ course.price | floatformat:2  }}</b> <br>
                                                                     {% csrf_token %}
                                                                     <input type="hidden" value="{{ course.slug }}">
-                                                                    <input type="submit" class="btn btn-sm btn-danger" value="Remove">
+                                                                    <input type="submit" class="mx-2 btn btn-sm btn-danger" value="Remove">
                                                                 </form>
-
-                                                              
                                                             </div>
                                                         </div>
                                                     </div>

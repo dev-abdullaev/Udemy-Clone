@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+
 {% load static %}
 
 {% block content %}
@@ -95,7 +96,7 @@
               </div>
               <div class="payment-box col-12 col-md-12 col-lg-12">
                   <div class="text-center d-grid">
-                      <a id="pay-now" href='{% url 'cart_checkout' %}' class="btn btn-primary" onclick="cardcreate()">Submit</a>
+                      <a id="pay-now" href='{% url 'cart_checkout' %}' class="btn btn-primary" onclick="cardcreate()">Pay now</a>
                   </div>
                   <br>
                   <br>
@@ -103,10 +104,11 @@
               </div>
             {% else %}
               <div class="payment-box col-12 col-md-12 col-lg-12">
-                <h4 class='payment-text'>Just proceed with a sumbit button <br>We won't charge you for FREE Course.</h4>
+                <h4 class='payment-text'>Just proceed with a Pay Now button <br>We won't charge you for FREE Course.</h4>
                 <div class="text-center d-grid">
-                    <a id="pay-now" href='{% url 'cart_checkout' %}' class="btn btn-primary" onclick="cardcreate()">Submit</a>
+                    <a id="pay-now" href='{% url 'cart_checkout' %}' class="btn btn-primary" onclick="cardcreate()">Pay now</a>
                 </div>
+                
                 <br>
                 <br>
                 </div>
@@ -189,4 +191,6 @@
 
 </script>
 
-{% endblock %}
+{% endblock %} 
+
+

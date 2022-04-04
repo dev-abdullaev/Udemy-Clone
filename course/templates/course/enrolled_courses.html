@@ -34,7 +34,7 @@
                                 <a href="{% url 'watch_course' enroll.course.slug %}" class="btn">
                                     <img style='width: 100%; height:200px' src="{{enroll.course.image.url}}" alt="" class="img-fluid">
                                     <br><br>
-                                    <b class="">{{enroll.course.name}}</b>
+                                    <b class="">{{enroll.course.name|truncatechars:25}}</b>
                                 </a>
                                 <div class="d-grid">
                                     <a class='m-2 btn btn-danger btn-sm ' href="{% url 'delete_my_course' enroll.course.slug enroll.pk %}">Remove</a>
