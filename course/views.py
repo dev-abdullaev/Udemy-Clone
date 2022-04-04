@@ -1,6 +1,4 @@
-from urllib import request
-from django.db.models import Count
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required, user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, render, redirect
@@ -9,6 +7,7 @@ from django.views.generic import View, CreateView, ListView, UpdateView, DeleteV
 from django.urls import reverse, reverse_lazy
 from django.utils.decorators import method_decorator
 from cart.cart import Cart
+from api.permissions import IsPaid
 
 from .forms import CourseReviewForm, SectionForm, VideoForm, CourseForm, CategoryForm
 from .models import Course, CourseReview, Section, Video, Enroll, Category
@@ -56,6 +55,7 @@ class CourseDetailView(DetailView):
             raise Http404("No %(verbose_name)s found matching the query" %
                           {'verbose_name': self.model._meta.verbose_name})
         return obj
+        
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -93,9 +93,7 @@ def watch_course(request, slug):
 
 
     
-    context = {
-        'course': course, 'videos': videos, 'is_paid': is_paid
-    }
+    context = {'course': course, 'videos': videos, 'is_paid': is_paid}
     return render(request, 'course/watch_course.html', context)
 
 

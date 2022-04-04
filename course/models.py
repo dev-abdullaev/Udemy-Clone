@@ -1,5 +1,6 @@
 from decimal import Decimal
 from django.db import models
+from django.db.models import Count
 from users.models import CustomUser, Teacher
 from django.template.defaultfilters import slugify
 from django.core.validators import MinValueValidator, MaxValueValidator
@@ -41,7 +42,8 @@ class Course(models.Model):
     name = models.CharField(max_length=250)
     slug = models.SlugField(max_length=150, unique=True)
     description = models.TextField()
-    image = models.ImageField(upload_to='course_images/')
+    learning_goal = models.CharField(max_length=250, blank=True, null=True)
+    image = models.ImageField(upload_to='course_images/', blank=True)
     price = models.DecimalField(max_digits=5, decimal_places=2)
     video_link = models.CharField(max_length=1000, null=True, blank=True)
     difficulty = models.CharField(choices=COURSE_LEVEL, default='Easy', max_length=50)
@@ -92,6 +94,16 @@ class Course(models.Model):
         return get_timer(length, type='short')
 
 
+    def course_student(self):
+        student_in_each_course = Enroll.objects.filter(course__slug=self.slug).count()
+        return  student_in_each_course
+
+    def total_students(self):
+        students = Enroll.objects.select_related().annotate(std_count=Count('student_id')).count()
+        return  students
+
+  
+
 class Section(models.Model):
     name = models.CharField(max_length=250)
     video = models.ManyToManyField("Video")
@@ -100,13 +112,12 @@ class Section(models.Model):
         return self.name
 
 
-    def total_length(self):
-        total = Decimal(0.0)
+    def total_section_duration(self):
+        length = Decimal(0.0)
+        for video in self.video.all():
+            length += video.length
 
-        for vid in self.video.all():
-            total += vid.length
-
-        return get_timer(total, type='min')
+        return get_timer(length, type='short')
 
 
 class Video(models.Model): 
@@ -126,8 +137,8 @@ class Video(models.Model):
 class CourseReview(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
-    comment = models.TextField()
-    stars_given = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
+    comment = models.TextField(default='')
+    stars_given = models.IntegerField(default=0, validators=[MinValueValidator(1), MaxValueValidator(5)])
     created_at = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
@@ -146,7 +157,6 @@ class Enroll(models.Model):
     def __str__(self):
         return f'{self.course.name} by {self.course.teacher}'
     
-
 
 
 

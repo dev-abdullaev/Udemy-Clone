@@ -6,9 +6,13 @@ from .models import Category, Course, Section, Video, CourseReview, Enroll
 
 admin.site.register(Section)
 admin.site.register(Video)
-admin.site.register(CourseReview)
 admin.site.register(Enroll)
 
+
+class CourseReviewAdmin(admin.ModelAdmin):
+    list_display = ('course', "id", 'user')
+
+admin.site.register(CourseReview, CourseReviewAdmin)
 
 
 class CategoryAdmin(admin.ModelAdmin):
