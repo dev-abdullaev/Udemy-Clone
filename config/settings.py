@@ -1,6 +1,7 @@
 import environ
 import os
 from pathlib import Path
+from datetime import timedelta
 
 
 
@@ -41,6 +42,8 @@ INSTALLED_APPS = [
     'course',
     'cart',
 
+    'rest_framework_simplejwt',
+    'rest_framework',
     'crispy_forms',
     "crispy_bootstrap5",
 
@@ -48,6 +51,13 @@ INSTALLED_APPS = [
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+}
 
 
 MIDDLEWARE = [
@@ -153,3 +163,13 @@ LOGIN_URL = "login"
 
 
 CART_SESSION_SLUG = 'cart'
+
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ROTATE_REFRESH_TOKENS': False,
+    'BLACKLIST_AFTER_ROTATION': False,
+    'UPDATE_LAST_LOGIN': False,
+
+}
