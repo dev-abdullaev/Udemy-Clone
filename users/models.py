@@ -32,7 +32,6 @@ class Teacher(models.Model):
         return self.user.profile_picture
 
 
-
 def post_user_created_signal(sender, instance, created, **kwargs):
     if created:
         if instance.is_active == False and instance.is_student == False:
