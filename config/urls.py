@@ -8,7 +8,7 @@ from rest_framework_simplejwt import views as jwt_views
 urlpatterns = [
 
     path('auth/', include('rest_framework.urls')),
-    path('api/', include('api.urls')),
+    path('my-api/v1/', include('api.urls')),
 
     path('mine/', admin.site.urls),
     path('', include('course.urls')),
